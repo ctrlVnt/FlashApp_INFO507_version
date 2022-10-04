@@ -6,13 +6,97 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <!-- SCHERMO INTERO -->
+    <LinearLayout
+        android:id="@+id/general_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <!-- METÀ SUPERIORE -->
+        <LinearLayout
+            android:id="@+id/superior_layout"
+            android:layout_width="match_parent"
+            android:layout_height="325dp"
+            android:orientation="vertical">
+
+            <!-- PER TESTO -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif"
+                    android:text="Ma collection"
+                    android:textSize="34sp" />
+
+            </LinearLayout>
+
+            <!-- LISTA MIEI MAZZI -->
+            <ListView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+        </LinearLayout>
+
+            <!-- DIVISORE -->
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="?android:attr/listDivider"/>
+
+        <!-- METÀ INFERIORE -->
+        <LinearLayout
+            android:id="@+id/inferior_layout"
+            android:layout_width="match_parent"
+            android:layout_height="325dp"
+            android:orientation="vertical">
+
+            <!-- PER TESTO -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/global"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif"
+
+                    android:text="Global"
+                    android:textSize="34sp" />
+
+            </LinearLayout>
+
+            <!-- LISTA MAZZI GLOBALI -->
+            <GridView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:orientation="horizontal">
+
+            <!-- BOTTONE AGGIUNTA CARTE O MAZZI -->
+
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/floatingActionButton4"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:clickable="true"
+                android:focusable="true"
+                app:srcCompat="@android:drawable/ic_input_add"/>
+        </LinearLayout>
+
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
