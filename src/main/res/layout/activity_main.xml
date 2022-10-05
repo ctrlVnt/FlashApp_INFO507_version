@@ -11,7 +11,9 @@
         android:id="@+id/general_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        tools:layout_editor_absoluteX="-16dp"
+        tools:layout_editor_absoluteY="0dp">
 
         <!-- METÀ SUPERIORE -->
         <LinearLayout
@@ -42,11 +44,11 @@
 
         </LinearLayout>
 
-            <!-- DIVISORE -->
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="?android:attr/listDivider"/>
+        <!-- DIVISORE -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="?android:attr/listDivider" />
 
         <!-- METÀ INFERIORE -->
         <LinearLayout
@@ -79,23 +81,19 @@
 
         </LinearLayout>
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="80dp"
             android:orientation="horizontal">
 
-            <!-- BOTTONE AGGIUNTA CARTE O MAZZI -->
-
-
-            <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/floatingActionButton4"
-                android:layout_width="0dp"
+            <Button
+                android:id="@+id/button"
+                android:layout_width="300dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:clickable="true"
-                android:focusable="true"
-                app:srcCompat="@android:drawable/ic_input_add"/>
-        </LinearLayout>
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:text="Add" />
+        </RelativeLayout>
 
     </LinearLayout>
 
