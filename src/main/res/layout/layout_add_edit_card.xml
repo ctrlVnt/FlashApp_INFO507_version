@@ -23,8 +23,9 @@
             <TextView
                 android:id="@+id/add_edit_text"
                 android:layout_width="match_parent"
+                android:layout_marginStart="10dp"
                 android:layout_height="match_parent"
-                android:text="add"
+                android:text="Add"
                 android:textSize="34sp" />
 
         </LinearLayout>
@@ -62,7 +63,7 @@
                         android:layout_marginTop="200dp"
                         android:layout_marginEnd="10dp"
                         android:layout_marginBottom="10dp"
-                        android:text="entrez votre question"
+                        android:text="Entrez votre question"
                         android:textColor="#ffffff">
                     </EditText>
 
@@ -81,7 +82,7 @@
                         android:layout_marginStart="10dp"
                         android:layout_marginEnd="10dp"
                         android:layout_marginBottom="200dp"
-                        android:text="entrez votre reponse"
+                        android:text="Entrez votre reponse"
                         android:textColor="#ffffff">
                     </EditText>
 

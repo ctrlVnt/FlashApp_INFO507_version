@@ -39,10 +39,12 @@
             </LinearLayout>
 
             <!-- LISTA MIEI MAZZI -->
-            <ListView
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/collection_list"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
-
+                android:layout_height="match_parent"
+                android:scrollbars="vertical"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
         </LinearLayout>
 
         <!-- DIVISORE -->
