@@ -10,8 +10,8 @@ import com.example.flashapp.R
 class CollectionAdapter: RecyclerView.Adapter<CollectionAdapter.ExpenseHolder>(){
 
     class ExpenseHolder(itemView: View): RecyclerView.ViewHolder(itemView){
-        val name: EditText = itemView.findViewById(R.id.collect_name)
-        val amount: EditText = itemView.findViewById(R.id.tag_name)
+        var name: EditText = itemView.findViewById(R.id.collect_name)
+        var tag: EditText = itemView.findViewById(R.id.tag_name)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ExpenseHolder {
@@ -21,8 +21,8 @@ class CollectionAdapter: RecyclerView.Adapter<CollectionAdapter.ExpenseHolder>()
     }
 
     override fun onBindViewHolder(holder: ExpenseHolder, position: Int) {
-        holder.name.text
-        holder.amount.text
+        holder.name.setText(toString())
+        holder.tag.setText(toString())
     }
 
     override fun getItemCount(): Int {

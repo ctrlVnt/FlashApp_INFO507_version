@@ -23,8 +23,7 @@ class MainActivity : AppCompatActivity() {
 
         addbutton.setOnClickListener {
             var dialog = PopupMain()
-            dialog.show(supportFragmentManager, "first popup")
+            dialog.show(supportFragmentManager, "add collection")
         }
-
     }
 }
