@@ -51,6 +51,8 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="3"
                     android:hint="Tag"
+                    android:fontFamily="@font/josefinsansbold"
+                    android:textSize="20dp"
                     android:inputType="text"
                     app:layout_constraintBottom_toTopOf="@+id/popup_window_button"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -63,6 +65,8 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="3"
                     android:hint="Nom du collection"
+                    android:fontFamily="@font/josefinsansbold"
+                    android:textSize="20dp"
                     android:inputType="text" />
 
 
@@ -70,10 +74,10 @@
                     android:id="@+id/popup_window_button"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
-                    android:background="#851635"
-                    android:text="ok"
+                    android:background="@color/buttons"
+                    android:text="OK"
                     android:textAllCaps="false"
-                    android:textColor="#FFFFFF"
+                    android:textColor="@color/white"
                     android:textSize="20sp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"

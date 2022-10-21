@@ -18,14 +18,16 @@
         <!-- PARTE SUPERIORE TESTO -->
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:background="@color/accent">
 
             <!-- da mettere nome del mazzo che si sta giocando-->
             <TextView
                 android:id="@+id/add_edit_text"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginStart="10dp"
+
                 android:text=""
                 android:textSize="34sp" />
 
@@ -34,7 +36,7 @@
         <!-- PARTE CENTRALE -->
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="636dp"
+            android:layout_height="603dp"
             android:orientation="vertical">
 
         </LinearLayout>
@@ -42,7 +44,9 @@
         <!-- PARTE INFERIORE -->
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="65dp"
+            android:background="@color/title"
+            android:gravity="center"
             android:orientation="horizontal">
 
             <!-- BOTTONI -->
@@ -57,6 +61,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="reject"
+                android:fontFamily="@font/josefinsansbold"
+                android:textSize="18dp"
+                android:backgroundTint="@color/buttons"
                 tools:layout_editor_absoluteX="323dp"
                 tools:layout_editor_absoluteY="685dp" />
 
@@ -70,6 +77,9 @@
                 android:layout_width="150dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:fontFamily="@font/josefinsansbold"
+                android:textSize="18dp"
+                android:backgroundTint="@color/purple_700"
                 android:text="tourner" />
 
             <Space
@@ -81,7 +91,10 @@
                 android:id="@+id/approve_edit"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Confirm"/>
+                android:fontFamily="@font/josefinsansbold"
+                android:textSize="18dp"
+                android:backgroundTint="@color/buttons"
+                android:text="Confirm" />
 
             <Space
                 android:layout_width="0dp"

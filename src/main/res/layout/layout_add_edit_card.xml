@@ -18,15 +18,22 @@
         <!-- PARTE SUPERIORE TESTO -->
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:background="@color/accent"
+            android:orientation="vertical"
+            android:padding="10dp">
 
             <TextView
                 android:id="@+id/add_edit_text"
                 android:layout_width="match_parent"
-                android:layout_marginStart="10dp"
                 android:layout_height="match_parent"
-                android:text="Add"
-                android:textSize="34sp" />
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"
+                android:background="@color/accent"
+                android:fontFamily="@font/josefinsansbold"
+                android:textColor="@color/background1"
+                android:textSize="40sp"
+                tools:text="ADD"/>
 
         </LinearLayout>
 
@@ -34,7 +41,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="636dp"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:background="@color/background1">
 
             <Space
                 android:layout_width="wrap_content"
@@ -52,7 +60,8 @@
 
                 <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="match_parent"
+                    android:background="@color/buttons">
 
                     <EditText
                         android:id="@+id/edit_question"
@@ -64,8 +73,9 @@
                         android:layout_marginEnd="10dp"
                         android:layout_marginBottom="10dp"
                         android:text="Entrez votre question"
-                        android:textColor="#ffffff">
-                    </EditText>
+                        android:fontFamily="@font/josefinsans"
+                        android:textSize="23sp"
+                        android:textColor="@color/white"></EditText>
 
                     <View
                         android:layout_width="270dp"
@@ -77,14 +87,15 @@
                         android:id="@+id/edit_answer"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center"
                         android:layout_alignParentBottom="true"
+                        android:layout_gravity="center"
                         android:layout_marginStart="10dp"
                         android:layout_marginEnd="10dp"
                         android:layout_marginBottom="200dp"
                         android:text="Entrez votre reponse"
-                        android:textColor="#ffffff">
-                    </EditText>
+                        android:fontFamily="@font/josefinsans"
+                        android:textSize="23sp"
+                        android:textColor="@color/white"></EditText>
 
                     <com.google.android.material.floatingactionbutton.FloatingActionButton
                         android:id="@+id/photo_question"

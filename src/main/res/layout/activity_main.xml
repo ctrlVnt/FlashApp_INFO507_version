@@ -20,21 +20,24 @@
             android:id="@+id/superior_layout"
             android:layout_width="match_parent"
             android:layout_height="325dp"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:background="@color/background2">
 
             <!-- PER TESTO -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:background="@color/accent">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:fontFamily="sans-serif"
-                    android:layout_marginStart="10dp"
-                    android:text="Ma collection"
-                    android:textSize="34sp" />
+                    android:padding="7dp"
+                    android:text="Mon collections"
+                    android:fontFamily="@font/josefinsansbold"
+                    android:textColor="@color/background1"
+                    android:textSize="40sp" />
 
             </LinearLayout>
 
@@ -49,7 +52,7 @@
 
         <!-- DIVISORE -->
         <View
-            android:layout_width="380dp"
+            android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_gravity="center"
             android:background="?android:attr/listDivider" />
@@ -59,22 +62,25 @@
             android:id="@+id/inferior_layout"
             android:layout_width="match_parent"
             android:layout_height="325dp"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:background="@color/background2">
 
             <!-- PER TESTO -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:background="@color/accent">
 
                 <TextView
                     android:id="@+id/global"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:fontFamily="sans-serif"
-                    android:layout_marginStart="10dp"
+                    android:padding="7dp"
                     android:text="Global"
-                    android:textSize="34sp" />
+                    android:fontFamily="@font/josefinsansbold"
+                    android:textColor="@color/background1"
+                    android:textSize="40sp" />
 
             </LinearLayout>
 
@@ -85,30 +91,34 @@
 
         </LinearLayout>
 
-        <Space
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1" />
+    <!--PART PLAY-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:layout_gravity="bottom"
+        android:background="@color/title">
 
-        <!-- PER ADD BUTTON -->
         <LinearLayout
-            android:layout_width="match_parent"
+            android:layout_width="200dp"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-        <Button
-            android:id="@+id/add_button"
-            android:layout_width="300dp"
             android:layout_gravity="center"
-            android:layout_height="wrap_content"
-            android:text="Add" />
+            android:layout_marginLeft="100dp"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:backgroundTint="@color/buttons"
+                android:elevation="20dp"
+                android:fontFamily="@font/josefinsansbold"
+                android:text="Add"
+                android:textColor="@color/white"
+                android:textSize="30dp" />
 
         </LinearLayout>
-
-        <Space
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1" />
+    </LinearLayout>
 
     </LinearLayout>
 
