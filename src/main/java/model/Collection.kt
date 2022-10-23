@@ -1,6 +1,6 @@
 package model
 
-class Card(
+class Collection(
     val name: String,
     val tag: String,
     val card_number: Int

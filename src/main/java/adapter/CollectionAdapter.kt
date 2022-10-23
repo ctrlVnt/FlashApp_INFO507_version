@@ -1,31 +1,38 @@
 package adapter
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.EditText
+import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.flashapp.R
 
-class CollectionAdapter: RecyclerView.Adapter<CollectionAdapter.ExpenseHolder>(){
+class CollectionAdapter(private val collections: List<model.Collection>): RecyclerView.Adapter<CollectionAdapter.CollectionviewHolder>() {
 
-    class ExpenseHolder(itemView: View): RecyclerView.ViewHolder(itemView){
-        var name: EditText = itemView.findViewById(R.id.collect_name)
-        var tag: EditText = itemView.findViewById(R.id.tag_name)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CollectionviewHolder {
+
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_collection, parent, false)
+        return CollectionviewHolder(view)
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ExpenseHolder {
-        val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.collection_element, parent, false)
-        return ExpenseHolder(view)
-    }
+    class CollectionviewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        private val officialName: TextView = itemView.findViewById(R.id.collection_name)
+        private val independent: TextView = itemView.findViewById(R.id.collection_tag)
+        private val capital: TextView = itemView.findViewById(R.id.collection_number)
 
-    override fun onBindViewHolder(holder: ExpenseHolder, position: Int) {
-        holder.name.setText(toString())
-        holder.tag.setText(toString())
+        fun bind(collection: model.Collection) {
+            officialName.text = collection.name
+            independent.text = collection.tag
+            capital.text = collection.card_number.toString()
+        }
     }
 
     override fun getItemCount(): Int {
-        return 10
+        return collections.size
+    }
+
+    override fun onBindViewHolder(holder: CollectionviewHolder, position: Int) {
+        return holder.bind(collections[position])
     }
 }
