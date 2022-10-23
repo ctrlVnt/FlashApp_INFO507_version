@@ -10,7 +10,7 @@ import com.example.flashapp.R
 
 class PopupMainDialog(private val id: Int?) : DialogFragment(){
 
-    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+    /*override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
 
         val ok = requireActivity().layoutInflater.inflate(R.layout.activity_popup_main, null)
         ok.findViewById<Button>(R.id.ok_add_collection).setOnClickListener(){
@@ -20,5 +20,5 @@ class PopupMainDialog(private val id: Int?) : DialogFragment(){
         return AlertDialog.Builder(requireContext())
             .setView(view)
             .create()
-    }
+    }*/
 }
