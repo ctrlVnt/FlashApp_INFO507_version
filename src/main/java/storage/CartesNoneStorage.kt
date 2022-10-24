@@ -1,14 +1,14 @@
 package storage
 
-import model.Collection
+import model.Cartes
 import storage.utility.Storage
 
-class CollectionNoneStorage: Storage<Collection>(){
-    override fun insert(obj: Collection): Int {
+class CartesNoneStorage: Storage<Cartes>() {
+    override fun insert(obj: Cartes): Int {
         TODO("Not yet implemented")
     }
 
-    override fun find(id: Int): Collection? {
+    override fun find(id: Int): Cartes? {
         TODO("Not yet implemented")
     }
 
@@ -16,16 +16,15 @@ class CollectionNoneStorage: Storage<Collection>(){
         TODO("Not yet implemented")
     }
 
-    override fun findAll(): List<Collection> {
+    override fun findAll(): List<Cartes> {
         TODO("Not yet implemented")
     }
 
-    override fun update(id: Int, obj: Collection) {
+    override fun update(id: Int, obj: Cartes) {
         TODO("Not yet implemented")
     }
 
     override fun delete(id: Int) {
         TODO("Not yet implemented")
     }
-
 }

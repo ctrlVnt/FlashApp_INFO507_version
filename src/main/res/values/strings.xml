@@ -3,4 +3,8 @@
 
     <string name="add_dialog_confirm">Valider</string>
     <string name="add_dialog_cancel">Annuler</string>
+
+    <string name="request_success"> success !</string>
+    <string name="request_fail"> fail :(</string>
+
 </resources>
