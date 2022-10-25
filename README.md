@@ -1,3 +1,3 @@
 # FlashApp
 
-FlashApp is an android application to improving memory or helping to learning something thanks to virtuals flashcards
+FlashApp is an android application to improve memory and helping to learn something thanks to the use of virtuals flashcards
