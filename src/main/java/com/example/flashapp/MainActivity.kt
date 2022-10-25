@@ -14,6 +14,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import request.Global
+import storage.CollectionJSONFileStorage
 import storage.CollectionStorage
 
 class MainActivity : AppCompatActivity() {
@@ -22,6 +23,8 @@ class MainActivity : AppCompatActivity() {
     private lateinit var recv:RecyclerView
     private lateinit var collectionList:ArrayList<model.Collection>
     private lateinit var collectionAdapter:CollectionAdapter
+
+    private lateinit var storage: CollectionJSONFileStorage
 
     private lateinit var recvg:RecyclerView
     private lateinit var globalAdapter:GlobalAdapter
@@ -51,10 +54,11 @@ class MainActivity : AppCompatActivity() {
         recv.layoutManager = LinearLayoutManager(this)
         recv.adapter = collectionAdapter
 
+        storage = CollectionJSONFileStorage(this)
+
         collectionAdapter.setonItemClickListener(object : CollectionAdapter.onItemClickListener{
-            override fun onItemClick(position: Int) {
-                collectionActivity(CollectionActivity)
-                Toast.makeText(this@MainActivity, "Click on $position", Toast.LENGTH_SHORT).show()
+            override fun onItemClick(nameItem: String) {
+                startCollectionActivity(findViewById(R.id.collection_item), nameItem)
             }
 
         })
@@ -115,35 +119,30 @@ class MainActivity : AppCompatActivity() {
                 dialog,_->
             val names = collectionName.text.toString()
             val tag = collectionTag.text.toString()
-            collectionList.add(model.Collection(int, "Name: $names","Tag. : $tag", 0))
-            collectionAdapter.notifyDataSetChanged()
-            /*JSONObject().apply {
-                put(
-                    "collection",
-                    JSONArray().apply {
-                        put(JSONObject().apply {
-                            put(names, tag)
-                        })
-                    }
-                )
-            }*/
-            Toast.makeText(this,"Success", Toast.LENGTH_SHORT).show()
+            if(names != "" && tag != "") {
+                collectionList.add(model.Collection(int, "Name: $names", "Tag. : $tag", 0))
+                /**inserimento nel json*/
+                storage.insert(model.Collection(int, "Name: $names", "Tag. : $tag", 0))
+                collectionAdapter.notifyDataSetChanged()
+            }else{
+                Toast.makeText(this,"Failed: content cannot be empty", Toast.LENGTH_SHORT).show()
+            }
+
             dialog.dismiss()
         }
         addDialog.setNegativeButton("Cancel"){
                 dialog,_->
             dialog.dismiss()
-            Toast.makeText(this,"Cancel", Toast.LENGTH_SHORT).show()
 
         }
         addDialog.create()
         addDialog.show()
     }
 
-    fun collectionActivity (view: View) {
+    fun startCollectionActivity (view: View, value : String) {
         val intent = Intent(this, CollectionActivity::class.java)
         // To pass any data to next activity
-        //intent.putExtra("keyIdentifier", value)
+        intent.putExtra("collectionName", value)
         startActivity(intent)
     }
 }

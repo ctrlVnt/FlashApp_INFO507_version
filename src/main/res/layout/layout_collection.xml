@@ -24,10 +24,10 @@
             android:padding="10dp">
 
             <TextView
-                android:id="@+id/Collection"
+                android:id="@+id/collection_name"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
-                android:layout_marginLeft="10dp"
+                android:layout_marginStart="10dp"
                 android:layout_marginTop="10dp"
                 android:background="@color/accent"
                 android:fontFamily="@font/josefinsansbold"
@@ -80,9 +80,10 @@
             android:background="@color/background2">
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/collection_list"
+                android:id="@+id/cartes_list"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="500dp"
+                android:orientation="horizontal"
                 android:scrollbars="vertical"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
@@ -91,8 +92,8 @@
         <!--PART PLAY-->
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="80dp"
-            android:layout_gravity="bottom"
+            android:layout_height="0dp"
+            android:layout_weight="1"
             android:background="@color/title">
 
             <LinearLayout

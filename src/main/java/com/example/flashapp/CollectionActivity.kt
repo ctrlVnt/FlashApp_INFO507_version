@@ -1,40 +1,41 @@
 package com.example.flashapp
 
 import adapter.CartesAdapter
-import adapter.CollectionAdapter
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.widget.Button
 import android.widget.EditText
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import model.Cartes
-import request.Global
 
 class CollectionActivity : AppCompatActivity() {
 
     private lateinit var addsBtn: Button
     private lateinit var recv: RecyclerView
-    private lateinit var collectionList:ArrayList<Cartes>
+    private lateinit var cartesList:ArrayList<Cartes>
     private lateinit var cartesAdapter: CartesAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.layout_collection)
 
+        findViewById<TextView>(R.id.collection_name).setText(intent.getStringExtra("collectionName"))
+
         /**set List*/
-        collectionList = ArrayList()
+        cartesList = ArrayList()
         /**set find Id*/
         addsBtn = findViewById(R.id.play_button)
-        recv = findViewById(R.id.collection_list)
+        recv = findViewById<RecyclerView>(R.id.cartes_list)
         /**set Adapter*/
-        cartesAdapter = CartesAdapter(this,collectionList)
+        cartesAdapter = CartesAdapter(this,cartesList)
         /**setRecycler view Adapter*/
         recv.layoutManager = LinearLayoutManager(this)
-        //recv.adapter = cartesAdapter
+        recv.adapter = cartesAdapter
 
 
         /**set Dialog*/
@@ -46,7 +47,7 @@ class CollectionActivity : AppCompatActivity() {
     private fun addCard() {
         val inflter = LayoutInflater.from(this)
         val v = inflter.inflate(R.layout.layout_add_edit_card,null)
-        /**set view*/
+
         val collectionName = v.findViewById<EditText>(R.id.edit_question)
         val collectionTag = v.findViewById<EditText>(R.id.edit_answer)
 
@@ -57,19 +58,8 @@ class CollectionActivity : AppCompatActivity() {
                 dialog,_->
             val question = collectionName.text.toString()
             val response = collectionTag.text.toString()
-            collectionList.add(Cartes(0, "collection", "Question : $question","Response : $response"))
-            //cartesAdapter.notifyDataSetChanged()
-
-            /*JSONObject().apply {
-                put(
-                    "collection",
-                    JSONArray().apply {
-                        put(JSONObject().apply {
-                            put(names, tag)
-                        })
-                    }
-                )
-            }*/
+            cartesList.add(Cartes(0, "collection", "Question : $question","Response : $response"))
+            cartesAdapter.notifyDataSetChanged()
 
             Toast.makeText(this,"Success", Toast.LENGTH_SHORT).show()
             dialog.dismiss()
