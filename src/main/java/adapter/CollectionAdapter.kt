@@ -68,7 +68,7 @@ class CollectionAdapter(val c: Context, val collList:ArrayList<model.Collection>
     private lateinit var mlistener : onItemClickListener
 
     interface onItemClickListener{
-        fun onItemClick(nameItem: String)
+        fun onItemClick(nameItem: String, tagItem: String)
     }
 
     fun setonItemClickListener(listener : onItemClickListener){
@@ -83,7 +83,7 @@ class CollectionAdapter(val c: Context, val collList:ArrayList<model.Collection>
             nameCollection = v.findViewById<TextView>(R.id.collection_name)
             tagCollection = v.findViewById<TextView>(R.id.collection_tag)
             v.setOnClickListener(){
-                listener.onItemClick(nameCollection.text as String)
+                listener.onItemClick(nameCollection.text as String, tagCollection.text as String)
             }
         }
 

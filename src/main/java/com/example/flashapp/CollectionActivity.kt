@@ -25,6 +25,7 @@ class CollectionActivity : AppCompatActivity() {
         setContentView(R.layout.layout_collection)
 
         findViewById<TextView>(R.id.collection_name).setText(intent.getStringExtra("collectionName"))
+        findViewById<TextView>(R.id.tag).setText(intent.getStringExtra("collectionTag"))
 
         /**set List*/
         cartesList = ArrayList()

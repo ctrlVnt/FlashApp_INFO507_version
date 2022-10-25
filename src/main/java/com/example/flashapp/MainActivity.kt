@@ -57,8 +57,8 @@ class MainActivity : AppCompatActivity() {
         storage = CollectionJSONFileStorage(this)
 
         collectionAdapter.setonItemClickListener(object : CollectionAdapter.onItemClickListener{
-            override fun onItemClick(nameItem: String) {
-                startCollectionActivity(findViewById(R.id.collection_item), nameItem)
+            override fun onItemClick(nameItem: String, tagItem: String) {
+                startCollectionActivity(findViewById(R.id.collection_item), nameItem, tagItem)
             }
 
         })
@@ -139,10 +139,11 @@ class MainActivity : AppCompatActivity() {
         addDialog.show()
     }
 
-    fun startCollectionActivity (view: View, value : String) {
+    fun startCollectionActivity (view: View, name : String, tag : String) {
         val intent = Intent(this, CollectionActivity::class.java)
         // To pass any data to next activity
-        intent.putExtra("collectionName", value)
+        intent.putExtra("collectionName", name)
+        intent.putExtra("collectionTag", tag)
         startActivity(intent)
     }
 }
