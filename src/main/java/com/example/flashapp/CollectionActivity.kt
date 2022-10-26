@@ -3,9 +3,11 @@ package com.example.flashapp
 import adapter.CartesAdapter
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.widget.*
+import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -13,10 +15,12 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.floatingactionbutton.FloatingActionButton
 import model.Cartes
 
 class CollectionActivity : AppCompatActivity() {
+
+    lateinit var imageView: ImageView
+    lateinit var buttonimg: Button
 
     private lateinit var addsBtn: Button
     private lateinit var recv: RecyclerView
@@ -34,7 +38,7 @@ class CollectionActivity : AppCompatActivity() {
 
         addsBtn = findViewById(R.id.play_button)
 
-        recv = findViewById<RecyclerView>(R.id.cartes_list)
+        recv = findViewById(R.id.cartes_list)
 
         cartesAdapter = CartesAdapter(this, cartesList)
         recv.layoutManager = LinearLayoutManager(this)
@@ -44,45 +48,43 @@ class CollectionActivity : AppCompatActivity() {
         addsBtn.setOnClickListener {
             addCard()
         }
+
+        //imageView = findViewById(R.id.image_question)
+        /*buttonimg = findViewById(R.id.play_button)
+
+        val galleryActivityLauncher: ActivityResultLauncher<Intent> =
+            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+                if (result.resultCode == RESULT_OK) {
+                    val data = result.data
+                    val uri: Uri? = data?.data
+                    val imageView = findViewById<ImageView>(R.id.image_question)
+                    imageView.setImageURI(uri)
+                }
+            }
+
+        buttonimg.setOnClickListener {
+            val intent = Intent(Intent.ACTION_GET_CONTENT)
+            intent.type =  "image/*"
+            intent.putExtra(Intent.EXTRA_LOCAL_ONLY, true)
+            galleryActivityLauncher.launch(intent)
+        }*/*/
     }
 
     private fun addCard() {
         val inflter = LayoutInflater.from(this)
         val item = inflter.inflate(R.layout.layout_add_edit_card, null)
 
-        val collectionName = item.findViewById<EditText>(R.id.edit_question)
-        val collectionTag = item.findViewById<EditText>(R.id.edit_answer)
+        val cardQuestion = item.findViewById<EditText>(R.id.edit_question)
+        val cardAnswer = item.findViewById<EditText>(R.id.edit_answer)
 
         val addDialog = AlertDialog.Builder(this)
 
         addDialog.setView(item)
 
-        /*addDialog.setItems(){ dialog, _ ->
-            val addbutton = findViewById<FloatingActionButton>(R.id.button_image)
-
-            val takePhoto = registerForActivityResult(
-                ActivityResultContracts.TakePicturePreview()
-            ) { bitmap ->
-                if (bitmap == null) {
-                    //addbutton.setImageResource(R.id.image_question)
-                } else {
-                    addbutton.setImageBitmap(bitmap)
-                }
-            }
-
-            addbutton.setOnClickListener {
-                if (checkPermission(android.Manifest.permission.MANAGE_MEDIA)) {
-                    intent = Intent(Intent.ACTION_CAMERA_BUTTON)
-                    startActivity(intent)
-                }
-                takePhoto.launch(null)
-            }
-        }*/
-        
-        addDialog.setPositiveButton("Ok") { dialog, _ ->
-
-            val question = collectionName.text.toString()
-            val response = collectionTag.text.toString()
+        addDialog.setPositiveButton("Ok") {
+                dialog, _ ->
+            val question = cardQuestion.text.toString()
+            val response = cardAnswer.text.toString()
             cartesList.add(Cartes(0, "collection", "Question : $question", "Response : $response"))
             cartesAdapter.notifyDataSetChanged()
 
