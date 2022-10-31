@@ -7,7 +7,6 @@ import storage.utility.Storage
 
 object CartesStorage {
     private const val STORAGE = "storage"
-    const val NONE = 0
     const val FILE_JSON = 1
     private const val DEFAULT = 1
 
@@ -26,7 +25,6 @@ object CartesStorage {
     fun get(context: Context): Storage<Cartes> {
         lateinit var storage: Storage<Cartes>
         when (getStorage(context)) {
-            NONE -> storage = CartesNoneStorage()
             FILE_JSON -> storage = CartesJSONFileStorage(context)
         }
         return storage

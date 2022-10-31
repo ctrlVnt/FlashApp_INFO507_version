@@ -1,26 +1,23 @@
 package com.example.flashapp
 
 import adapter.CartesAdapter
-import android.content.Intent
 import android.content.pm.PackageManager
-import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.widget.*
-import androidx.activity.result.ActivityResultLauncher
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import model.Cartes
 
 class CollectionActivity : AppCompatActivity() {
 
     lateinit var imageView: ImageView
-    lateinit var buttonimg: Button
+    lateinit var buttonimg: FloatingActionButton
 
     private lateinit var addsBtn: Button
     private lateinit var recv: RecyclerView
@@ -41,7 +38,7 @@ class CollectionActivity : AppCompatActivity() {
         recv = findViewById(R.id.cartes_list)
 
         cartesAdapter = CartesAdapter(this, cartesList)
-        recv.layoutManager = LinearLayoutManager(this)
+        recv.layoutManager = GridLayoutManager(this,3,RecyclerView.VERTICAL,false)
         recv.adapter = cartesAdapter
 
 
@@ -77,6 +74,8 @@ class CollectionActivity : AppCompatActivity() {
         val cardQuestion = item.findViewById<EditText>(R.id.edit_question)
         val cardAnswer = item.findViewById<EditText>(R.id.edit_answer)
 
+        val btnImgn = item.findViewById<FloatingActionButton>(R.id.button_image)
+
         val addDialog = AlertDialog.Builder(this)
 
         addDialog.setView(item)
@@ -98,6 +97,23 @@ class CollectionActivity : AppCompatActivity() {
         }
         addDialog.create()
         addDialog.show()
+
+        /*val galleryActivityLauncher: ActivityResultLauncher<Intent> =
+            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+                if (result.resultCode == RESULT_OK) {
+                    val data = result.data
+                    val uri: Uri? = data?.data
+                    val imageView = findViewById<ImageView>(R.id.image_question)
+                    imageView.setImageURI(uri)
+                }
+            }
+
+        btnImgn.setOnClickListener{
+            val intent = Intent(Intent.ACTION_GET_CONTENT)
+            intent.type =  "image/*"
+            intent.putExtra(Intent.EXTRA_LOCAL_ONLY, true)
+            galleryActivityLauncher.launch(intent)
+        }*/*/
     }
 
     private fun checkPermission(permission: String): Boolean {
