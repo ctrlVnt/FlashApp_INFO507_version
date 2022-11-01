@@ -1,6 +1,7 @@
 package storage.utility.file
 
 import android.content.Context
+import android.widget.Toast
 import storage.utility.Storage
 import java.io.BufferedReader
 import java.io.FileNotFoundException
@@ -43,6 +44,7 @@ abstract class FileStorage<T>(private val context: Context, name: String, extens
                 }
                 input.close()
                 data = stringToData(builder.toString())
+                Toast.makeText(context,"$data", Toast.LENGTH_SHORT).show()
                 nextId = if(data.keys.size == 0) 1 else max(data.keys) + 1
             }
         }catch(e: FileNotFoundException){
@@ -84,6 +86,10 @@ abstract class FileStorage<T>(private val context: Context, name: String, extens
     override fun update(id: Int, obj: T) {
         data[id] = obj
         write()
+    }
+
+    override fun tieni(){
+        read()
     }
 
 }

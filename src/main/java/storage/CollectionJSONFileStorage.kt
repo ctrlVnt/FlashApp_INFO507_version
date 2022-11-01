@@ -5,7 +5,7 @@ import model.Collection
 import org.json.JSONObject
 import storage.utility.file.JSONFileStorage
 
-class CollectionJSONFileStorage(context: Context): JSONFileStorage<Collection>(context,"Collection") {
+class CollectionJSONFileStorage(context: Context): JSONFileStorage<Collection>(context,"collection") {
     override fun create(id: Int, obj: Collection): Collection {
         return Collection(obj.id, obj.name,obj.tag,obj.card_number)
     }

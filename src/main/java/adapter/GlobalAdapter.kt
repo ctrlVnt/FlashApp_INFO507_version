@@ -1,3 +1,5 @@
+package adapter
+
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
@@ -5,39 +7,48 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.flashapp.R
+import storage.utility.Storage
 import java.util.ArrayList
 
-class GlobalAdapter(ctx: Context, private val dataModelArrayList: ArrayList<model.Collection>) :
-    RecyclerView.Adapter<GlobalAdapter.GlobalViewHolder>() {
+class GlobalAdapter(val dataModelArrayList:ArrayList<Storage<model.Collection>>):RecyclerView.Adapter<GlobalAdapter.GlobalViewHolder>() {
 
-    inner class GlobalViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    private lateinit var mlistener : onItemClickListener
+
+    interface onItemClickListener{
+        fun onItemClick(nameItem: String, tagItem: String)
+    }
+
+    fun setonItemClickListener(listener : onItemClickListener){
+        mlistener = listener
+    }
+
+    inner class GlobalViewHolder(itemView: View, listener : GlobalAdapter.onItemClickListener) : RecyclerView.ViewHolder(itemView) {
 
         var name: TextView
         var tag: TextView
-        var number: TextView
+        //var number: TextView
 
         init {
             name = itemView.findViewById<View>(R.id.collection_name) as TextView
             tag = itemView.findViewById<View>(R.id.collection_tag) as TextView
-            number = itemView.findViewById<View>(R.id.collection_number) as TextView
+            //number = itemView.findViewById<View>(R.id.collection_number) as TextView
+
+            itemView.setOnClickListener(){
+                listener.onItemClick(name as String, tag.text as String)
+            }
         }
     }
 
-    private val inflater: LayoutInflater
-
-    init {
-        inflater = LayoutInflater.from(ctx)
-    }
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GlobalViewHolder {
+        val inflater = LayoutInflater.from(parent.context)
         val view = inflater.inflate(R.layout.item_collection, parent, false)
-        return GlobalViewHolder(view)
+        return GlobalViewHolder(view, mlistener)
     }
 
     override fun onBindViewHolder(holder: GlobalViewHolder, position: Int) {
-        holder.name.setText(dataModelArrayList[position].name)
-        holder.tag.setText(dataModelArrayList[position].tag)
-        holder.number.setText(dataModelArrayList[position].card_number)
+        holder.name.text = dataModelArrayList[position].find(position)?.name
+        holder.tag.text = dataModelArrayList[position].find(position)?.tag
+        //holder.number.setText(dataModelArrayList[position].card_number)
     }
 
     override fun getItemCount(): Int {
