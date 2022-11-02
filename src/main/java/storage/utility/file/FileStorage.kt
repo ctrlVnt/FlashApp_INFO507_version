@@ -2,6 +2,7 @@ package storage.utility.file
 
 import android.content.Context
 import android.widget.Toast
+import com.example.flashapp.R
 import storage.utility.Storage
 import java.io.BufferedReader
 import java.io.FileNotFoundException
@@ -9,13 +10,15 @@ import java.io.InputStreamReader
 import java.io.OutputStreamWriter
 
 
-
-
 abstract class FileStorage<T>(private val context: Context, name: String, extension: String): Storage<T>() {
 
     private val fileName = "storage_$name.$extension"
     private var data = HashMap<Int, T>()
     private var nextId = 1
+
+    init {
+        read()
+    }
 
     protected abstract fun create(id: Int, obj:T): T
     protected abstract fun dataToString(data: HashMap<Int, T>): String
@@ -44,7 +47,6 @@ abstract class FileStorage<T>(private val context: Context, name: String, extens
                 }
                 input.close()
                 data = stringToData(builder.toString())
-                Toast.makeText(context,"$data", Toast.LENGTH_SHORT).show()
                 nextId = if(data.keys.size == 0) 1 else max(data.keys) + 1
             }
         }catch(e: FileNotFoundException){
@@ -87,9 +89,4 @@ abstract class FileStorage<T>(private val context: Context, name: String, extens
         data[id] = obj
         write()
     }
-
-    override fun tieni(){
-        read()
-    }
-
 }

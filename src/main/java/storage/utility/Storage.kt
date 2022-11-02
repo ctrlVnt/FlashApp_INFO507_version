@@ -12,6 +12,4 @@ abstract class Storage<T> {
     abstract fun update(id: Int, obj: T)
 
     abstract fun delete(id: Int)
-
-    abstract fun tieni()
 }

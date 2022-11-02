@@ -12,11 +12,9 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import model.Collection
-import org.json.JSONObject
 import request.Global
 import storage.CollectionJSONFileStorage
-import java.lang.Exception
+import storage.CollectionStorage
 
 class MainActivity : AppCompatActivity() {
 
@@ -27,7 +25,12 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var storageLocal: CollectionJSONFileStorage
 
-    private lateinit var storageGlobal: Global
+    private lateinit var global: Global
+
+    private lateinit var globalAdapter: CollectionAdapter
+    private lateinit var globalList: ArrayList<model.Collection>
+    private lateinit var recvGlobale: RecyclerView
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,27 +45,30 @@ class MainActivity : AppCompatActivity() {
 
         recvLocale.layoutManager = LinearLayoutManager(this)
 
-        storageLocal = CollectionJSONFileStorage(this)
-        /*var obj = JSONObject(loadJSon())
-        storageLocal.insert(model.Collection(0, "Name: scimmia", "Tag. : io", 0))
-        storageLocal.insert(model.Collection(1, "Name: AHAHAH", "Tag. : GGGGG", 0))
-        //storageLocal.tieni()
-
-        var jsonArray = obj.getJSONArray("collection")
+        /*var jsonArray = obj.getJSONArray("collection")
         for (i in 0 until jsonArray.length()) {
             val collectionDetail = jsonArray.getJSONObject(i)
             collectionList.add(model.Collection(1, "Name: xxxx", "Tag. : xxxx", 4))
         }*/
         recvLocale.adapter = collectionAdapter
-        //loadCollections(storageLocal.find(0))
 
-        collectionAdapter.setonItemClickListener(object : CollectionAdapter.onItemClickListener{
+        /*collectionAdapter.setonItemClickListener(object : CollectionAdapter.onItemClickListener{
             override fun onItemClick(nameItem: String, tagItem: String) {
                 startCollectionActivity(findViewById(R.id.collection_item), nameItem, tagItem)
             }
-        })
+        })*/
 
-        //storageGlobal = Global(this)
+        globalList = ArrayList()
+        recvGlobale = findViewById(R.id.global_list)
+        globalAdapter = CollectionAdapter(this,globalList)
+        recvGlobale.layoutManager = LinearLayoutManager(this)
+        recvGlobale.adapter = globalAdapter
+
+        global = Global(this)
+        storageLocal = CollectionJSONFileStorage(this)
+        loadJson(storageLocal)
+
+
 
         var i :Int = 0
         addsBtn.setOnClickListener {
@@ -88,9 +94,6 @@ class MainActivity : AppCompatActivity() {
             if(names != "" && tag != "") {
                 collectionList.add(model.Collection(int, "Name: $names", "Tag. : $tag", 0))
 
-                /**inserimento nel json*/
-                storageLocal.insert(model.Collection(int, "Name: $names", "Tag. : $tag", 0))
-
                 collectionAdapter.notifyDataSetChanged()
             }else{
                 Toast.makeText(this,"Failed: content cannot be empty", Toast.LENGTH_SHORT).show()
@@ -107,28 +110,18 @@ class MainActivity : AppCompatActivity() {
         addDialog.show()
     }
 
-    private fun loadCollections(find: Collection?) {
-        if (find != null) {
-            collectionList.add(model.Collection(find.id, "Name: ${find.name}", "Tag. : ${find.tag}", find.card_number))
-        }else{
-            Toast.makeText(this,"NON C'È NULLA", Toast.LENGTH_SHORT).show()
+    private fun loadJson(storageLocal: CollectionJSONFileStorage) {
+        println(storageLocal.size())
+        for (i in 1 until storageLocal.size() / 6) {
+            globalList.add(
+                model.Collection(
+                    0,
+                    "Name: ${storageLocal.find(i)!!.name}",
+                    "Tag. : ${storageLocal.find(i)!!.tag}",
+                    0
+                )
+            )
         }
-    }
-
-    private fun loadJSon(): String? {
-        val json: String?
-        try {
-            val inputStream = assets.open("storage_collection.json")
-            val size = inputStream.available()
-            val buffer = ByteArray(size)
-            inputStream.read(buffer)
-            inputStream.close()
-            json = String(buffer)
-        } catch (ex: Exception) {
-            ex.printStackTrace()
-            return ""
-        }
-        return json
     }
 
     fun startCollectionActivity (view: View, name : String, tag : String) {

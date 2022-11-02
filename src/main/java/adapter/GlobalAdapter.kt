@@ -10,7 +10,7 @@ import com.example.flashapp.R
 import storage.utility.Storage
 import java.util.ArrayList
 
-class GlobalAdapter(val dataModelArrayList:ArrayList<Storage<model.Collection>>):RecyclerView.Adapter<GlobalAdapter.GlobalViewHolder>() {
+class GlobalAdapter(val c: Context, val dataModelArrayList:ArrayList<model.Collection>):RecyclerView.Adapter<GlobalAdapter.GlobalViewHolder>() {
 
     private lateinit var mlistener : onItemClickListener
 
@@ -29,8 +29,10 @@ class GlobalAdapter(val dataModelArrayList:ArrayList<Storage<model.Collection>>)
         //var number: TextView
 
         init {
-            name = itemView.findViewById<View>(R.id.collection_name) as TextView
-            tag = itemView.findViewById<View>(R.id.collection_tag) as TextView
+            /*name = itemView.findViewById<View>(R.id.collection_name) as TextView
+            tag = itemView.findViewById<View>(R.id.collection_tag) as TextView*/
+            name = itemView.findViewById(R.id.collection_name)
+            tag = itemView.findViewById(R.id.collection_tag)
             //number = itemView.findViewById<View>(R.id.collection_number) as TextView
 
             itemView.setOnClickListener(){
@@ -46,8 +48,11 @@ class GlobalAdapter(val dataModelArrayList:ArrayList<Storage<model.Collection>>)
     }
 
     override fun onBindViewHolder(holder: GlobalViewHolder, position: Int) {
-        holder.name.text = dataModelArrayList[position].find(position)?.name
-        holder.tag.text = dataModelArrayList[position].find(position)?.tag
+        /*holder.name.text = dataModelArrayList[position].find(position)?.name
+        holder.tag.text = dataModelArrayList[position].find(position)?.tag*/
+        val newList = dataModelArrayList[position]
+        holder.name.text = newList.name
+        holder.tag.text = newList.tag
         //holder.number.setText(dataModelArrayList[position].card_number)
     }
 
