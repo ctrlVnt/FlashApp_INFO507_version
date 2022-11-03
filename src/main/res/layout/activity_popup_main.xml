@@ -26,10 +26,11 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/popup_window_background_container"
-            android:layout_width="match_parent"
+            android:layout_width="300dp"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:minHeight="170dp"
+            android:layout_gravity="center"
             android:orientation="horizontal">
 
             <EditText
@@ -41,6 +42,7 @@
                 android:hint="Tag"
                 android:inputType="text"
                 android:textSize="20sp"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/collect_name" />
@@ -53,23 +55,9 @@
                 android:fontFamily="@font/josefinsansbold"
                 android:hint="Nom du collection"
                 android:inputType="text"
-                android:textSize="20sp" />
-
-            <!--
-            <Button
-                android:id="@+id/ok_add_collection"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:background="@color/buttons"
-                android:fontFamily="@font/josefinsansbold"
-                android:text="OK"
-                android:textAllCaps="false"
-                android:textColor="@color/white"
                 android:textSize="20sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
-            -->
+                app:layout_constraintTop_toTopOf="parent" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.cardview.widget.CardView>

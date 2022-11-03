@@ -22,7 +22,7 @@ class Global (private val context : Context){
                 val jsonArray = res.getJSONArray("collection")
                 for (i in 0 until jsonArray.length()) {
                     val collect = jsonArray.getJSONObject(i)
-                    CollectionStorage.get(context).insert(
+                    CollectionStorage.get(context, "global").insert(
                         Collection(
                             collect.getInt(Collection.ID),
                             collect.getString(Collection.NAME),
@@ -37,5 +37,11 @@ class Global (private val context : Context){
         )
         queue.add(request)
         queue.start()
+    }
+
+    private fun delete(){
+        for (col in CollectionStorage.get(context, "global").findAll()) {
+            CollectionStorage.get(context, "global").delete(col.id)
+        }
     }
 }

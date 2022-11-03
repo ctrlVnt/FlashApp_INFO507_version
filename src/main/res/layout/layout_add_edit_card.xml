@@ -21,8 +21,7 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/buttons">
+            android:layout_height="match_parent">
 
             <EditText
                 android:id="@+id/edit_question"
@@ -35,7 +34,6 @@
                 android:layout_marginBottom="10dp"
                 android:fontFamily="@font/josefinsans"
                 android:hint="Entrez votre question"
-                android:textColor="@color/white"
                 android:textSize="23sp">
 
             </EditText>
@@ -57,7 +55,6 @@
                 android:layout_marginBottom="200dp"
                 android:fontFamily="@font/josefinsans"
                 android:hint="Entrez votre reponse"
-                android:textColor="@color/white"
                 android:textSize="23sp">
 
             </EditText>

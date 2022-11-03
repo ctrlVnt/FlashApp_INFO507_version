@@ -5,7 +5,7 @@ import model.Cartes
 import org.json.JSONObject
 import storage.utility.file.JSONFileStorage
 
-class CartesJSONFileStorage (context: Context): JSONFileStorage<Cartes>(context,"cartes") {
+class CartesJSONFileStorage (context: Context, collection:String): JSONFileStorage<Cartes>(context,collection) {
     override fun create(id: Int, obj: Cartes): Cartes {
         return Cartes(obj.id, obj.collection,obj.question,obj.reponse)
     }

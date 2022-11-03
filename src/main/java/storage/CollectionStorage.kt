@@ -23,10 +23,10 @@ object CollectionStorage {
         getPreferences(context).edit().putInt(STORAGE, FILE_JSON).apply()
     }
 
-    fun get(context: Context): Storage<Collection> {
+    fun get(context: Context, name: String): Storage<Collection> {
         lateinit var storage: Storage<Collection>
         when (getStorage(context)) {
-            FILE_JSON -> storage = CollectionJSONFileStorage(context)
+            FILE_JSON -> storage = CollectionJSONFileStorage(context, name)
         }
         return storage
     }

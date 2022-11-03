@@ -12,17 +12,24 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import model.Collection
 import request.Global
 import storage.CollectionJSONFileStorage
 import storage.CollectionStorage
+import kotlin.collections.ArrayList
 
 class MainActivity : AppCompatActivity() {
+    companion object {
+        private const val LOCAL = "collection"
+        private const val GLOBAL = "global"
+    }
 
     private lateinit var addsBtn: Button
     private lateinit var recvLocale:RecyclerView
-    private lateinit var collectionList:ArrayList<model.Collection>
+    private lateinit var localList:ArrayList<model.Collection>
     private lateinit var collectionAdapter:CollectionAdapter
 
+    private lateinit var storageGlobal: CollectionJSONFileStorage
     private lateinit var storageLocal: CollectionJSONFileStorage
 
     private lateinit var global: Global
@@ -31,32 +38,25 @@ class MainActivity : AppCompatActivity() {
     private lateinit var globalList: ArrayList<model.Collection>
     private lateinit var recvGlobale: RecyclerView
 
+    private var i_local = 1
+    private var i_global = 1
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        collectionList = ArrayList()
+        localList = ArrayList()
 
         addsBtn = findViewById(R.id.add_button)
         recvLocale = findViewById(R.id.collection_list)
 
-        collectionAdapter = CollectionAdapter(this,collectionList)
+        collectionAdapter = CollectionAdapter(this,localList)
 
         recvLocale.layoutManager = LinearLayoutManager(this)
 
-        /*var jsonArray = obj.getJSONArray("collection")
-        for (i in 0 until jsonArray.length()) {
-            val collectionDetail = jsonArray.getJSONObject(i)
-            collectionList.add(model.Collection(1, "Name: xxxx", "Tag. : xxxx", 4))
-        }*/
         recvLocale.adapter = collectionAdapter
 
-        /*collectionAdapter.setonItemClickListener(object : CollectionAdapter.onItemClickListener{
-            override fun onItemClick(nameItem: String, tagItem: String) {
-                startCollectionActivity(findViewById(R.id.collection_item), nameItem, tagItem)
-            }
-        })*/
 
         globalList = ArrayList()
         recvGlobale = findViewById(R.id.global_list)
@@ -65,16 +65,38 @@ class MainActivity : AppCompatActivity() {
         recvGlobale.adapter = globalAdapter
 
         global = Global(this)
-        storageLocal = CollectionJSONFileStorage(this)
-        loadJson(storageLocal)
 
+        /*Global Storage, funziona ma va sistemato*/
+        storageGlobal = CollectionJSONFileStorage(this, GLOBAL)
+        if(i_global < storageGlobal.size()) {
+            loadJson(storageGlobal, globalList, i_global)
+            i_global = storageGlobal.size()
+        }
 
+        /*Local storage*/
+        storageLocal = CollectionJSONFileStorage(this, LOCAL)
+        if(i_local <= storageLocal.size()) {
+            loadJson(storageLocal, localList, i_local)
+            i_local = storageLocal.size()
+        }
 
-        var i :Int = 0
+        var i = 0
         addsBtn.setOnClickListener {
             addInfo(i)
             i = i + 1
         }
+
+        collectionAdapter.setonItemClickListener(object : CollectionAdapter.onItemClickListener{
+            override fun onItemClick(nameItem: String, tagItem: String) {
+                startCollectionActivity(findViewById(R.id.collection_item), nameItem, tagItem)
+            }
+        })
+
+        globalAdapter.setonItemClickListener(object : CollectionAdapter.onItemClickListener{
+            override fun onItemClick(nameItem: String, tagItem: String) {
+                startCollectionActivity(findViewById(R.id.collection_item), nameItem, tagItem)
+            }
+        })
     }
 
     private fun addInfo(int: Int) {
@@ -92,8 +114,15 @@ class MainActivity : AppCompatActivity() {
             val names = collectionName.text.toString()
             val tag = collectionTag.text.toString()
             if(names != "" && tag != "") {
-                collectionList.add(model.Collection(int, "Name: $names", "Tag. : $tag", 0))
-
+                localList.add(model.Collection(int, "Name: $names", "Tag. : $tag", 0))
+                storageLocal.insert(
+                    Collection(
+                        int,
+                        names,
+                        tag,
+                        0
+                    )
+                )
                 collectionAdapter.notifyDataSetChanged()
             }else{
                 Toast.makeText(this,"Failed: content cannot be empty", Toast.LENGTH_SHORT).show()
@@ -110,14 +139,14 @@ class MainActivity : AppCompatActivity() {
         addDialog.show()
     }
 
-    private fun loadJson(storageLocal: CollectionJSONFileStorage) {
-        println(storageLocal.size())
-        for (i in 1 until storageLocal.size() / 6) {
-            globalList.add(
+    private fun loadJson(storage: CollectionJSONFileStorage, arraylist:ArrayList<model.Collection>, fine:Int) {
+        println(storage.size())
+        for (i in fine until storage.size() + 1) {
+            arraylist.add(
                 model.Collection(
                     0,
-                    "Name: ${storageLocal.find(i)!!.name}",
-                    "Tag. : ${storageLocal.find(i)!!.tag}",
+                    "Name: ${storage.find(i)!!.name}",
+                    "Tag. : ${storage.find(i)!!.tag}",
                     0
                 )
             )
@@ -126,7 +155,7 @@ class MainActivity : AppCompatActivity() {
 
     fun startCollectionActivity (view: View, name : String, tag : String) {
         val intent = Intent(this, CollectionActivity::class.java)
-        // To pass any data to next activity
+
         intent.putExtra("collectionName", name)
         intent.putExtra("collectionTag", tag)
         startActivity(intent)

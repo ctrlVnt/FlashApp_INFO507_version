@@ -47,7 +47,8 @@ abstract class FileStorage<T>(private val context: Context, name: String, extens
                 }
                 input.close()
                 data = stringToData(builder.toString())
-                nextId = if(data.keys.size == 0) 1 else max(data.keys) + 1
+                //nextId = if(data.keys.size == 0) 1 else max(data.keys) + 1
+                nextId = if (data.keys.maxOrNull() == null) 1 else data.keys.maxOrNull()!! + 1
             }
         }catch(e: FileNotFoundException){
             write()
