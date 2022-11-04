@@ -1,12 +1,12 @@
 package com.example.flashapp
 
 import adapter.CartesAdapter
-import android.app.Dialog
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.View
 import android.widget.*
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
@@ -43,9 +43,11 @@ class CollectionActivity : AppCompatActivity() {
         findViewById<TextView>(R.id.collection_name).setText(intent.getStringExtra("collectionName"))
         findViewById<TextView>(R.id.tag).setText(intent.getStringExtra("collectionTag"))
 
+        var nameCollection = intent.getStringExtra("collectionName")!!
+
         cartesList = ArrayList()
 
-        addsBtn = findViewById(R.id.play_button)
+        addsBtn = findViewById(R.id.add_button)
 
         recv = findViewById(R.id.cartes_list)
 
@@ -62,7 +64,7 @@ class CollectionActivity : AppCompatActivity() {
             }
         }
 
-        storageCart = CartesJSONFileStorage(this, intent.getStringExtra("collectionName")!!)
+        storageCart = CartesJSONFileStorage(this, nameCollection)
         if(i_local <= storageCart.size()) {
             loadJson(storageCart, cartesList, i_local)
             i_local = storageCart.size()
@@ -71,6 +73,16 @@ class CollectionActivity : AppCompatActivity() {
         addsBtn.setOnClickListener {
             addCard()
         }
+
+        findViewById<Button>(R.id.play_button).setOnClickListener{
+            startPlayActivity(nameCollection)
+        }
+
+        cartesAdapter.setonItemClickListener(object : CartesAdapter.onItemClickListener{
+            override fun onItemClick(questionItem: String, responseItem: String) {
+                editCard(questionItem, responseItem)
+            }
+        })
     }
 
     private fun addCard() {
@@ -106,9 +118,56 @@ class CollectionActivity : AppCompatActivity() {
             .show()
 
         addDialog.findViewById<FloatingActionButton>(R.id.button_image)!!.setOnClickListener {
-            /*if (checkPermission(android.Manifest.permission.READ_EXTERNAL_STORAGE)) {
+            if (checkPermission(android.Manifest.permission.READ_EXTERNAL_STORAGE)) {
                 startActivity(intent)
-            }*/
+            }
+            val intent = Intent(Intent.ACTION_GET_CONTENT)
+            intent.type =  "image/*"
+            intent.putExtra(Intent.EXTRA_LOCAL_ONLY, true)
+            galleryActivityLauncher.launch(intent)
+        }
+
+        addDialog.setOnDismissListener {
+
+        }
+    }
+
+    private fun editCard(questionItem: String, responseItem: String) {
+        val inflter = LayoutInflater.from(this)
+        val item = inflter.inflate(R.layout.layout_add_edit_card, null)
+
+        val cardQuestion = item.findViewById<EditText>(R.id.edit_question)
+        val cardAnswer = item.findViewById<EditText>(R.id.edit_answer)
+
+        val addDialog = AlertDialog.Builder(this)
+            .setView(item)
+            .setPositiveButton("Ok") {
+                    dialog, _ ->
+                val question = cardQuestion.text.toString()
+                val response = cardAnswer.text.toString()
+                cartesList[0] = Cartes(0, "collection", "Question : $question", "Response : $response")
+                storageCart.update(0,
+                    Cartes(
+                        0,
+                        "collection",
+                        question,
+                        response
+                    )
+                )
+                cartesAdapter.notifyDataSetChanged()
+                Toast.makeText(this, "Success", Toast.LENGTH_SHORT).show()
+                dialog.dismiss()
+            }
+            .setNegativeButton("Cancel") { dialog, _ ->
+                dialog.dismiss()
+                Toast.makeText(this, "Cancel", Toast.LENGTH_SHORT).show()
+            }
+            .show()
+
+        addDialog.findViewById<FloatingActionButton>(R.id.button_image)!!.setOnClickListener {
+            if (checkPermission(android.Manifest.permission.READ_EXTERNAL_STORAGE)) {
+                startActivity(intent)
+            }
             val intent = Intent(Intent.ACTION_GET_CONTENT)
             intent.type =  "image/*"
             intent.putExtra(Intent.EXTRA_LOCAL_ONLY, true)
@@ -149,4 +208,10 @@ class CollectionActivity : AppCompatActivity() {
         return res
     }
 
+    private fun startPlayActivity (list: String) {
+        val intent = Intent(this, PlayActivity::class.java)
+
+        intent.putExtra("list", list)
+        startActivity(intent)
+    }
 }

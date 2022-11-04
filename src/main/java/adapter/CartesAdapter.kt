@@ -11,13 +11,27 @@ import model.Cartes
 
 class CartesAdapter(val c: Context, val collList:ArrayList<Cartes>):RecyclerView.Adapter<CartesAdapter.CartesViewHolder>() {
 
-    inner class CartesViewHolder(val v:View):RecyclerView.ViewHolder(v){
+    private lateinit var mlistener : CartesAdapter.onItemClickListener
+
+    interface onItemClickListener{
+        fun onItemClick(questionItem: String, reponseItem: String)
+    }
+
+    fun setonItemClickListener(listener : onItemClickListener){
+        mlistener = listener
+    }
+
+    inner class CartesViewHolder(val v:View, listener : CartesAdapter.onItemClickListener):RecyclerView.ViewHolder(v){
         var question:TextView
         var reponse:TextView
 
         init {
             question = v.findViewById(R.id.card_question)
             reponse = v.findViewById(R.id.card_response)
+
+            v.setOnClickListener(){
+                mlistener.onItemClick(question.text as String, reponse.text as String)
+            }
         }
 
     }
@@ -25,7 +39,7 @@ class CartesAdapter(val c: Context, val collList:ArrayList<Cartes>):RecyclerView
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CartesViewHolder {
         val inflater = LayoutInflater.from(parent.context)
         val v  = inflater.inflate(R.layout.item_card,parent,false)
-        return CartesViewHolder(v)
+        return CartesViewHolder(v, mlistener)
     }
 
     override fun onBindViewHolder(holder: CartesViewHolder, position: Int) {
