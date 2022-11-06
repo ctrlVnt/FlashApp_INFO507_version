@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.*
 import androidx.recyclerview.widget.RecyclerView
 import com.example.flashapp.R
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class CollectionAdapter(val c: Context, val collList:ArrayList<model.Collection>):RecyclerView.Adapter<CollectionAdapter.CollectionViewHolder>() {
 
@@ -14,6 +15,7 @@ class CollectionAdapter(val c: Context, val collList:ArrayList<model.Collection>
 
     interface onItemClickListener{
         fun onItemClick(nameItem: String, tagItem: String)
+        fun onAddClick(position: Int)
     }
 
     fun setonItemClickListener(listener : onItemClickListener){
@@ -23,15 +25,20 @@ class CollectionAdapter(val c: Context, val collList:ArrayList<model.Collection>
     inner class CollectionViewHolder(val v:View, listener : onItemClickListener):RecyclerView.ViewHolder(v){
         var nameCollection:TextView
         var tagCollection:TextView
+        var numberCard:TextView
 
         init {
-            nameCollection = v.findViewById<TextView>(R.id.collection_name)
-            tagCollection = v.findViewById<TextView>(R.id.collection_tag)
+            nameCollection = v.findViewById(R.id.collection_name)
+            tagCollection = v.findViewById(R.id.collection_tag)
+            numberCard = v.findViewById(R.id.collection_number)
             v.setOnClickListener(){
                 mlistener.onItemClick(nameCollection.text as String, tagCollection.text as String)
             }
+            v.findViewById<FloatingActionButton>(R.id.delete_collection).setOnClickListener{
+                //removeItem(adapterPosition)
+                mlistener.onAddClick(adapterPosition)
+            }
         }
-
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CollectionViewHolder {
@@ -44,9 +51,15 @@ class CollectionAdapter(val c: Context, val collList:ArrayList<model.Collection>
         val newList = collList[position]
         holder.nameCollection.text = newList.name
         holder.tagCollection.text = newList.tag
+        holder.numberCard.text = "NOMBRE DES CARTES: " + newList.card_number.toString()
     }
 
     override fun getItemCount(): Int {
         return  collList.size
+    }
+
+    private fun removeItem(position: Int){
+        collList.removeAt(position)
+        notifyItemRemoved(position)
     }
 }

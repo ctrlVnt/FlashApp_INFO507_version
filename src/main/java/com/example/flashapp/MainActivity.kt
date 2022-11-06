@@ -7,15 +7,16 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.Button
+import android.widget.CheckBox
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import model.Collection
 import request.Global
 import storage.CollectionJSONFileStorage
-import storage.CollectionStorage
 import kotlin.collections.ArrayList
 
 class MainActivity : AppCompatActivity() {
@@ -63,11 +64,13 @@ class MainActivity : AppCompatActivity() {
         globalAdapter = CollectionAdapter(this,globalList)
         recvGlobale.layoutManager = LinearLayoutManager(this)
         recvGlobale.adapter = globalAdapter
+        //recvGlobale.findViewById<FloatingActionButton>(R.id.delete_collection).visibility = View.INVISIBLE
 
-        global = Global(this)
+        storageGlobal = CollectionJSONFileStorage(this, GLOBAL)
+
+        global = Global(this, storageGlobal.size())
 
         /*Global Storage, funziona ma va sistemato*/
-        storageGlobal = CollectionJSONFileStorage(this, GLOBAL)
         if(i_global < storageGlobal.size()) {
             loadJson(storageGlobal, globalList, i_global)
             i_global = storageGlobal.size()
@@ -80,21 +83,34 @@ class MainActivity : AppCompatActivity() {
             i_local = storageLocal.size()
         }
 
-        var i = 0
         addsBtn.setOnClickListener {
-            addInfo(i)
-            i = i + 1
+            addInfo(storageLocal.size())
         }
 
         collectionAdapter.setonItemClickListener(object : CollectionAdapter.onItemClickListener{
             override fun onItemClick(nameItem: String, tagItem: String) {
                 startCollectionActivity(findViewById(R.id.collection_item), nameItem, tagItem)
             }
+
+            override fun onAddClick(position: Int) {
+                /*for (i in position until storageLocal.size()) {
+                    storageLocal.update(i, storageLocal.find(i + 1)!!)
+                }
+                storageLocal.delete(storageLocal.size())*/
+                localList.removeAt(position)
+                collectionAdapter.notifyDataSetChanged()
+            }
         })
 
         globalAdapter.setonItemClickListener(object : CollectionAdapter.onItemClickListener{
             override fun onItemClick(nameItem: String, tagItem: String) {
                 startCollectionActivity(findViewById(R.id.collection_item), nameItem, tagItem)
+            }
+
+            override fun onAddClick(position: Int) {
+                storageGlobal.delete(position)
+                globalList.removeAt(position)
+                globalAdapter.notifyDataSetChanged()
             }
         })
     }
@@ -105,6 +121,7 @@ class MainActivity : AppCompatActivity() {
 
         val collectionName = v.findViewById<EditText>(R.id.collect_name)
         val collectionTag = v.findViewById<EditText>(R.id.tag_name)
+        val check = v.findViewById<CheckBox>(R.id.checkBox)
 
         val addDialog = AlertDialog.Builder(this)
 
@@ -114,7 +131,7 @@ class MainActivity : AppCompatActivity() {
             val names = collectionName.text.toString()
             val tag = collectionTag.text.toString()
             if(names != "" && tag != "") {
-                localList.add(model.Collection(int, "Name: $names", "Tag. : $tag", 0))
+                localList.add(model.Collection(int, "Name: $names", "Tag : $tag", 0))
                 storageLocal.insert(
                     Collection(
                         int,
@@ -123,6 +140,14 @@ class MainActivity : AppCompatActivity() {
                         0
                     )
                 )
+                if(check.isChecked){
+                    global.writeOnGlobal(Collection(
+                        int,
+                        names,
+                        tag,
+                        0
+                    ))
+                }
                 collectionAdapter.notifyDataSetChanged()
             }else{
                 Toast.makeText(this,"Failed: content cannot be empty", Toast.LENGTH_SHORT).show()
@@ -142,14 +167,18 @@ class MainActivity : AppCompatActivity() {
     private fun loadJson(storage: CollectionJSONFileStorage, arraylist:ArrayList<model.Collection>, fine:Int) {
         println(storage.size())
         for (i in fine until storage.size() + 1) {
-            arraylist.add(
-                model.Collection(
-                    0,
-                    "Name: ${storage.find(i)!!.name}",
-                    "Tag. : ${storage.find(i)!!.tag}",
-                    0
+            try {
+                arraylist.add(
+                    model.Collection(
+                        storage.find(i)!!.id,
+                        "Name: ${storage.find(i)!!.name}",
+                        "Tag : ${storage.find(i)!!.tag}",
+                        storage.find(i)!!.card_number
+                    )
                 )
-            )
+            }catch (e:java.lang.Exception){
+                break
+            }
         }
     }
 

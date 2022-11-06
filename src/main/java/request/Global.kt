@@ -10,7 +10,7 @@ import model.Collection
 import storage.CollectionStorage
 
 
-class Global (private val context : Context){
+class Global (private val context : Context, tot:Int){
 
     init {
         val queue = Volley.newRequestQueue(context)
@@ -20,18 +20,20 @@ class Global (private val context : Context){
             null,
             { res ->
                 val jsonArray = res.getJSONArray("collection")
-                for (i in 0 until jsonArray.length()) {
-                    val collect = jsonArray.getJSONObject(i)
-                    CollectionStorage.get(context, "global").insert(
-                        Collection(
-                            collect.getInt(Collection.ID),
-                            collect.getString(Collection.NAME),
-                            collect.getString(Collection.TAG),
-                            collect.getInt(Collection.CARDNUMBER)
+                if(tot < jsonArray.length()){
+                    for (i in tot until jsonArray.length()) {
+                        val collect = jsonArray.getJSONObject(i)
+                        CollectionStorage.get(context, "global").insert(
+                            Collection(
+                                collect.getInt(Collection.ID),
+                                collect.getString(Collection.NAME),
+                                collect.getString(Collection.TAG),
+                                collect.getInt(Collection.CARDNUMBER)
+                            )
                         )
-                    )
+                    }
+                    Toast.makeText(context, R.string.request_success, Toast.LENGTH_SHORT).show()
                 }
-                Toast.makeText(context, R.string.request_success, Toast.LENGTH_SHORT).show()
             },
             { err -> Toast.makeText(context, R.string.request_fail, Toast.LENGTH_SHORT).show() }
         )
@@ -43,5 +45,9 @@ class Global (private val context : Context){
         for (col in CollectionStorage.get(context, "global").findAll()) {
             CollectionStorage.get(context, "global").delete(col.id)
         }
+    }
+
+    fun writeOnGlobal(collection: Collection) {
+        /*method to implement*/
     }
 }

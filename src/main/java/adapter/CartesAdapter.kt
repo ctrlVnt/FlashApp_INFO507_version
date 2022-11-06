@@ -14,7 +14,7 @@ class CartesAdapter(val c: Context, val collList:ArrayList<Cartes>):RecyclerView
     private lateinit var mlistener : CartesAdapter.onItemClickListener
 
     interface onItemClickListener{
-        fun onItemClick(questionItem: String, reponseItem: String)
+        fun onItemClick(questionItem: String, reponseItem: String, position: Int)
     }
 
     fun setonItemClickListener(listener : onItemClickListener){
@@ -30,7 +30,7 @@ class CartesAdapter(val c: Context, val collList:ArrayList<Cartes>):RecyclerView
             reponse = v.findViewById(R.id.card_response)
 
             v.setOnClickListener(){
-                mlistener.onItemClick(question.text as String, reponse.text as String)
+                mlistener.onItemClick(question.text as String, reponse.text as String, adapterPosition)
             }
         }
 

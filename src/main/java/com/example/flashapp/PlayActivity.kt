@@ -34,6 +34,9 @@ class PlayActivity: AppCompatActivity() {
         confrimButton = findViewById(R.id.confirm)
         roundButton = findViewById(R.id.round)
 
+        rejectButton.visibility = View.INVISIBLE
+        confrimButton.visibility = View.INVISIBLE
+
         start()
 
     }

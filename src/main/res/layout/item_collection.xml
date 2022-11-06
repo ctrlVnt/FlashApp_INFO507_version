@@ -21,7 +21,8 @@
             <TextView
                 android:id="@+id/collection_name"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="0dp"
+                android:layout_weight="1"
                 android:textSize="25sp"
                 android:fontFamily="@font/josefinsansbold"
                 android:padding="7dp"
@@ -47,9 +48,24 @@
                 android:fontFamily="@font/josefinsansitalic"
                 android:textSize="16sp"
                 android:padding="7dp"
-                android:text="NOMBRE DES CARTES: "
                 android:textColor="@color/texts">
             </TextView>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:layout_marginEnd="20dp"
+            android:orientation="vertical"
+            android:layout_gravity="end">
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/delete_collection"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                app:srcCompat="@android:drawable/ic_menu_delete" />
 
         </LinearLayout>
     </androidx.cardview.widget.CardView>

@@ -6,8 +6,8 @@ import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.View
 import android.widget.*
+import androidx.activity.result.ActivityResultCallback
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
@@ -18,9 +18,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import model.Cartes
-import model.Collection
 import storage.CartesJSONFileStorage
-import storage.CollectionJSONFileStorage
 
 class CollectionActivity : AppCompatActivity() {
 
@@ -31,10 +29,12 @@ class CollectionActivity : AppCompatActivity() {
 
     private lateinit var storageCart: CartesJSONFileStorage
 
-    private lateinit var galleryActivityLauncher:
-            ActivityResultLauncher<Intent>
+    private lateinit var galleryActivityLauncher: ActivityResultLauncher<Intent>
+
+
 
     private var i_local = 1
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -69,9 +69,10 @@ class CollectionActivity : AppCompatActivity() {
             loadJson(storageCart, cartesList, i_local)
             i_local = storageCart.size()
         }
+        findViewById<TextView>(R.id.nCartes).setText("NOMBRE DE CARTES: " + storageCart.size().toString())
 
         addsBtn.setOnClickListener {
-            addCard()
+            addCard(storageCart.size())
         }
 
         findViewById<Button>(R.id.play_button).setOnClickListener{
@@ -79,13 +80,13 @@ class CollectionActivity : AppCompatActivity() {
         }
 
         cartesAdapter.setonItemClickListener(object : CartesAdapter.onItemClickListener{
-            override fun onItemClick(questionItem: String, responseItem: String) {
-                editCard(questionItem, responseItem)
+            override fun onItemClick(questionItem: String, responseItem: String, position: Int) {
+                editCard(questionItem, responseItem, position)
             }
         })
     }
 
-    private fun addCard() {
+    private fun addCard(count:Int) {
         val inflter = LayoutInflater.from(this)
         val item = inflter.inflate(R.layout.layout_add_edit_card, null)
 
@@ -98,22 +99,20 @@ class CollectionActivity : AppCompatActivity() {
                 dialog, _ ->
             val question = cardQuestion.text.toString()
             val response = cardAnswer.text.toString()
-            cartesList.add(Cartes(0, "collection", "Question : $question", "Response : $response"))
+            cartesList.add(Cartes(count, "collection", question, response))
             storageCart.insert(
                 Cartes(
-                    0,
+                    count,
                     "collection",
                     question,
                     response
                 )
             )
             cartesAdapter.notifyDataSetChanged()
-            Toast.makeText(this, "Success", Toast.LENGTH_SHORT).show()
             dialog.dismiss()
             }
             .setNegativeButton("Cancel") { dialog, _ ->
             dialog.dismiss()
-            Toast.makeText(this, "Cancel", Toast.LENGTH_SHORT).show()
             }
             .show()
 
@@ -125,19 +124,23 @@ class CollectionActivity : AppCompatActivity() {
             intent.type =  "image/*"
             intent.putExtra(Intent.EXTRA_LOCAL_ONLY, true)
             galleryActivityLauncher.launch(intent)
+
         }
 
         addDialog.setOnDismissListener {
-
+            findViewById<TextView>(R.id.nCartes).setText("NOMBRE DE CARTES: " + storageCart.size().toString())
         }
     }
 
-    private fun editCard(questionItem: String, responseItem: String) {
+    private fun editCard(questionItem: String, responseItem: String, position: Int) {
         val inflter = LayoutInflater.from(this)
         val item = inflter.inflate(R.layout.layout_add_edit_card, null)
 
         val cardQuestion = item.findViewById<EditText>(R.id.edit_question)
         val cardAnswer = item.findViewById<EditText>(R.id.edit_answer)
+
+        cardQuestion.setText(questionItem)
+        cardAnswer.setText(responseItem)
 
         val addDialog = AlertDialog.Builder(this)
             .setView(item)
@@ -145,22 +148,20 @@ class CollectionActivity : AppCompatActivity() {
                     dialog, _ ->
                 val question = cardQuestion.text.toString()
                 val response = cardAnswer.text.toString()
-                cartesList[0] = Cartes(0, "collection", "Question : $question", "Response : $response")
-                storageCart.update(0,
+                cartesList[position] = Cartes(position, "collection", question, response)
+                storageCart.update(position,
                     Cartes(
-                        0,
+                        position,
                         "collection",
                         question,
                         response
                     )
                 )
                 cartesAdapter.notifyDataSetChanged()
-                Toast.makeText(this, "Success", Toast.LENGTH_SHORT).show()
                 dialog.dismiss()
             }
             .setNegativeButton("Cancel") { dialog, _ ->
                 dialog.dismiss()
-                Toast.makeText(this, "Cancel", Toast.LENGTH_SHORT).show()
             }
             .show()
 
@@ -180,14 +181,13 @@ class CollectionActivity : AppCompatActivity() {
     }
 
     private fun loadJson(storage: CartesJSONFileStorage, arraylist:ArrayList<Cartes>, fine:Int) {
-        println(storage.size())
         for (i in fine until storage.size() + 1) {
             arraylist.add(
                 Cartes(
-                    0,
+                    storage.find(i)!!.id,
                     "collection: ${storage.find(i)!!.collection}",
-                    "Question : ${storage.find(i)!!.question}",
-                    "Response : ${storage.find(i)!!.reponse}"
+                    storage.find(i)!!.question,
+                    storage.find(i)!!.reponse
                 )
             )
         }
@@ -206,6 +206,19 @@ class CollectionActivity : AppCompatActivity() {
             res = false
         }
         return res
+        /*val isReadPermission = ContextCompat.checkSelfPermission(
+            this,
+            android.Manifest.permission.READ_EXTERNAL_STORAGE
+        ) == PackageManager.PERMISSION_GRANTED
+        isReadPermissionGranted = isReadPermission
+        val permissionRequest = mutableListOf<String>()
+        if (!isReadPermissionGranted) {
+            registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissions ->
+                isReadPermissionGranted =
+                    permissions[android.Manifest.permission.READ_EXTERNAL_STORAGE]
+                        ?: isReadPermissionGranted
+            }
+        }*/
     }
 
     private fun startPlayActivity (list: String) {
