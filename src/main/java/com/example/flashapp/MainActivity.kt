@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import model.Collection
 import request.Global
+import storage.CartesJSONFileStorage
 import storage.CollectionJSONFileStorage
 import kotlin.collections.ArrayList
 
@@ -52,7 +53,7 @@ class MainActivity : AppCompatActivity() {
         addsBtn = findViewById(R.id.add_button)
         recvLocale = findViewById(R.id.collection_list)
 
-        collectionAdapter = CollectionAdapter(this,localList)
+        collectionAdapter = CollectionAdapter(this,localList, LOCAL)
 
         recvLocale.layoutManager = LinearLayoutManager(this)
 
@@ -61,16 +62,15 @@ class MainActivity : AppCompatActivity() {
 
         globalList = ArrayList()
         recvGlobale = findViewById(R.id.global_list)
-        globalAdapter = CollectionAdapter(this,globalList)
+        globalAdapter = CollectionAdapter(this,globalList, GLOBAL)
         recvGlobale.layoutManager = LinearLayoutManager(this)
         recvGlobale.adapter = globalAdapter
-        //recvGlobale.findViewById<FloatingActionButton>(R.id.delete_collection).visibility = View.INVISIBLE
 
         storageGlobal = CollectionJSONFileStorage(this, GLOBAL)
 
         global = Global(this, storageGlobal.size())
 
-        /*Global Storage, funziona ma va sistemato*/
+        /*Global Storage*/
         if(i_global < storageGlobal.size()) {
             loadJson(storageGlobal, globalList, i_global)
             i_global = storageGlobal.size()
@@ -89,14 +89,20 @@ class MainActivity : AppCompatActivity() {
 
         collectionAdapter.setonItemClickListener(object : CollectionAdapter.onItemClickListener{
             override fun onItemClick(nameItem: String, tagItem: String) {
-                startCollectionActivity(findViewById(R.id.collection_item), nameItem, tagItem)
+                startCollectionActivity(findViewById(R.id.collection_item), nameItem, tagItem, LOCAL)
             }
 
             override fun onAddClick(position: Int) {
-                /*for (i in position until storageLocal.size()) {
-                    storageLocal.update(i, storageLocal.find(i + 1)!!)
+                /*val storageCart = CartesJSONFileStorage(this@MainActivity, storageLocal.find(position + 1)!!.name)
+                for (f in 1 until storageCart.size()){
+                    storageCart.delete(f)
+                }*/
+                if(storageLocal.size() > 1) {
+                    for (k in position + 1 until storageLocal.size()) {
+                        storageLocal.update(k, storageLocal.find(k + 1)!!)
+                    }
                 }
-                storageLocal.delete(storageLocal.size())*/
+                storageLocal.delete(storageLocal.size())
                 localList.removeAt(position)
                 collectionAdapter.notifyDataSetChanged()
             }
@@ -104,13 +110,11 @@ class MainActivity : AppCompatActivity() {
 
         globalAdapter.setonItemClickListener(object : CollectionAdapter.onItemClickListener{
             override fun onItemClick(nameItem: String, tagItem: String) {
-                startCollectionActivity(findViewById(R.id.collection_item), nameItem, tagItem)
+                startCollectionActivity(findViewById(R.id.collection_item), nameItem, tagItem, GLOBAL)
             }
 
             override fun onAddClick(position: Int) {
-                storageGlobal.delete(position)
-                globalList.removeAt(position)
-                globalAdapter.notifyDataSetChanged()
+                TODO("Not yet implemented")
             }
         })
     }
@@ -131,7 +135,7 @@ class MainActivity : AppCompatActivity() {
             val names = collectionName.text.toString()
             val tag = collectionTag.text.toString()
             if(names != "" && tag != "") {
-                localList.add(model.Collection(int, "Name: $names", "Tag : $tag", 0))
+                localList.add(model.Collection(int, names, tag, 0))
                 storageLocal.insert(
                     Collection(
                         int,
@@ -171,8 +175,8 @@ class MainActivity : AppCompatActivity() {
                 arraylist.add(
                     model.Collection(
                         storage.find(i)!!.id,
-                        "Name: ${storage.find(i)!!.name}",
-                        "Tag : ${storage.find(i)!!.tag}",
+                        storage.find(i)!!.name,
+                        storage.find(i)!!.tag,
                         storage.find(i)!!.card_number
                     )
                 )
@@ -182,11 +186,12 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun startCollectionActivity (view: View, name : String, tag : String) {
+    fun startCollectionActivity (view: View, name : String, tag : String, type: String) {
         val intent = Intent(this, CollectionActivity::class.java)
 
         intent.putExtra("collectionName", name)
         intent.putExtra("collectionTag", tag)
+        intent.putExtra("collectiontype", type)
         startActivity(intent)
     }
 }

@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.flashapp.R
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
-class CollectionAdapter(val c: Context, val collList:ArrayList<model.Collection>):RecyclerView.Adapter<CollectionAdapter.CollectionViewHolder>() {
+class CollectionAdapter(val c: Context, val collList:ArrayList<model.Collection>, private var nameItem: String ):RecyclerView.Adapter<CollectionAdapter.CollectionViewHolder>() {
 
     private lateinit var mlistener : onItemClickListener
 
@@ -22,7 +22,7 @@ class CollectionAdapter(val c: Context, val collList:ArrayList<model.Collection>
         mlistener = listener
     }
 
-    inner class CollectionViewHolder(val v:View, listener : onItemClickListener):RecyclerView.ViewHolder(v){
+    inner class CollectionViewHolder(val v:View, listener : onItemClickListener, nameItem:String):RecyclerView.ViewHolder(v){
         var nameCollection:TextView
         var tagCollection:TextView
         var numberCard:TextView
@@ -34,9 +34,13 @@ class CollectionAdapter(val c: Context, val collList:ArrayList<model.Collection>
             v.setOnClickListener(){
                 mlistener.onItemClick(nameCollection.text as String, tagCollection.text as String)
             }
-            v.findViewById<FloatingActionButton>(R.id.delete_collection).setOnClickListener{
-                //removeItem(adapterPosition)
-                mlistener.onAddClick(adapterPosition)
+            if (nameItem == "collection") {
+                v.findViewById<FloatingActionButton>(R.id.delete_collection).setOnClickListener {
+                    //removeItem(adapterPosition)
+                    mlistener.onAddClick(adapterPosition)
+                }
+            }else{
+                v.findViewById<FloatingActionButton>(R.id.delete_collection).visibility = View.INVISIBLE
             }
         }
     }
@@ -44,13 +48,13 @@ class CollectionAdapter(val c: Context, val collList:ArrayList<model.Collection>
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CollectionViewHolder {
         val inflater = LayoutInflater.from(parent.context)
         val v  = inflater.inflate(R.layout.item_collection,parent,false)
-        return CollectionViewHolder(v, mlistener)
+        return CollectionViewHolder(v, mlistener, nameItem)
     }
 
     override fun onBindViewHolder(holder: CollectionViewHolder, position: Int) {
         val newList = collList[position]
         holder.nameCollection.text = newList.name
-        holder.tagCollection.text = newList.tag
+        holder.tagCollection.text = "#"+newList.tag
         holder.numberCard.text = "NOMBRE DES CARTES: " + newList.card_number.toString()
     }
 

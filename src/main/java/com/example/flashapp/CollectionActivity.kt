@@ -4,8 +4,11 @@ import adapter.CartesAdapter
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
+import android.os.Binder
 import android.os.Bundle
+import android.renderscript.ScriptGroup.Binding
 import android.view.LayoutInflater
+import android.view.View
 import android.widget.*
 import androidx.activity.result.ActivityResultCallback
 import androidx.activity.result.ActivityResultLauncher
@@ -31,19 +34,33 @@ class CollectionActivity : AppCompatActivity() {
 
     private lateinit var galleryActivityLauncher: ActivityResultLauncher<Intent>
 
-
-
     private var i_local = 1
 
+    private lateinit var nameCollection: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.layout_collection)
 
+        val type = intent.getStringExtra("collectiontype")
+
+        var glob = 0
+
+        if(type == "global")
+            glob = 1
+
+        /*if (checkPermission(android.Manifest.permission.READ_EXTERNAL_STORAGE)) {
+            startActivity(intent)
+        }*/
+
+        if (type == "global"){
+            findViewById<Button>(R.id.add_button).visibility = View.INVISIBLE
+        }
+
         findViewById<TextView>(R.id.collection_name).setText(intent.getStringExtra("collectionName"))
         findViewById<TextView>(R.id.tag).setText(intent.getStringExtra("collectionTag"))
 
-        var nameCollection = intent.getStringExtra("collectionName")!!
+        nameCollection = intent.getStringExtra("collectionName")!!
 
         cartesList = ArrayList()
 
@@ -51,7 +68,7 @@ class CollectionActivity : AppCompatActivity() {
 
         recv = findViewById(R.id.cartes_list)
 
-        cartesAdapter = CartesAdapter(this, cartesList)
+        cartesAdapter = CartesAdapter(this, cartesList, glob)
         recv.layoutManager = GridLayoutManager(this,3,RecyclerView.VERTICAL,false)
         recv.adapter = cartesAdapter
 
@@ -83,6 +100,15 @@ class CollectionActivity : AppCompatActivity() {
             override fun onItemClick(questionItem: String, responseItem: String, position: Int) {
                 editCard(questionItem, responseItem, position)
             }
+
+            override fun deleteCardClick(position: Int) {
+                for (k in position + 1 until storageCart.size() ) {
+                    storageCart.update(k, storageCart.find(k + 1)!!)
+                }
+                storageCart.delete(storageCart.size())
+                cartesList.removeAt(position)
+                cartesAdapter.notifyDataSetChanged()
+            }
         })
     }
 
@@ -99,11 +125,11 @@ class CollectionActivity : AppCompatActivity() {
                 dialog, _ ->
             val question = cardQuestion.text.toString()
             val response = cardAnswer.text.toString()
-            cartesList.add(Cartes(count, "collection", question, response))
+            cartesList.add(Cartes(count, nameCollection, question, response))
             storageCart.insert(
                 Cartes(
                     count,
-                    "collection",
+                    nameCollection,
                     question,
                     response
                 )
@@ -117,9 +143,6 @@ class CollectionActivity : AppCompatActivity() {
             .show()
 
         addDialog.findViewById<FloatingActionButton>(R.id.button_image)!!.setOnClickListener {
-            if (checkPermission(android.Manifest.permission.READ_EXTERNAL_STORAGE)) {
-                startActivity(intent)
-            }
             val intent = Intent(Intent.ACTION_GET_CONTENT)
             intent.type =  "image/*"
             intent.putExtra(Intent.EXTRA_LOCAL_ONLY, true)
@@ -148,11 +171,11 @@ class CollectionActivity : AppCompatActivity() {
                     dialog, _ ->
                 val question = cardQuestion.text.toString()
                 val response = cardAnswer.text.toString()
-                cartesList[position] = Cartes(position, "collection", question, response)
+                cartesList[position] = Cartes(position, nameCollection, question, response)
                 storageCart.update(position,
                     Cartes(
                         position,
-                        "collection",
+                        nameCollection,
                         question,
                         response
                     )

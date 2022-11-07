@@ -19,6 +19,8 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
+
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="99dp"
@@ -77,6 +79,14 @@
                     android:fontFamily="@font/josefinsans"
                     android:layout_gravity="center">
                 </TextView>
+
+                <com.google.android.material.floatingactionbutton.FloatingActionButton
+                    android:id="@+id/cart_delete"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:clickable="true"
+                    app:srcCompat="@android:drawable/ic_menu_delete"
+                    android:layout_gravity="end"/>
 
             </LinearLayout>
         </LinearLayout>
