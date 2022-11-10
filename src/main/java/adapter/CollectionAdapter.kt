@@ -31,12 +31,11 @@ class CollectionAdapter(val c: Context, val collList:ArrayList<model.Collection>
             nameCollection = v.findViewById(R.id.collection_name)
             tagCollection = v.findViewById(R.id.collection_tag)
             numberCard = v.findViewById(R.id.collection_number)
-            v.setOnClickListener(){
+            v.setOnClickListener{
                 mlistener.onItemClick(nameCollection.text as String, tagCollection.text as String)
             }
             if (nameItem == "collection") {
                 v.findViewById<FloatingActionButton>(R.id.delete_collection).setOnClickListener {
-                    //removeItem(adapterPosition)
                     mlistener.onAddClick(adapterPosition)
                 }
             }else{
@@ -60,10 +59,5 @@ class CollectionAdapter(val c: Context, val collList:ArrayList<model.Collection>
 
     override fun getItemCount(): Int {
         return  collList.size
-    }
-
-    private fun removeItem(position: Int){
-        collList.removeAt(position)
-        notifyItemRemoved(position)
     }
 }

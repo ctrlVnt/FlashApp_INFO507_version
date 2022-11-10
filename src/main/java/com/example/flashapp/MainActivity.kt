@@ -21,11 +21,13 @@ import storage.CollectionJSONFileStorage
 import kotlin.collections.ArrayList
 
 class MainActivity : AppCompatActivity() {
+    /*come la define di C, definisci tipi globali non modificabili*/
     companion object {
         private const val LOCAL = "collection"
         private const val GLOBAL = "global"
     }
 
+    /*inizializzi variabili che non sono di tipo comune, quindi Int, String etc... (init è sempre un inizializzazione)*/
     private lateinit var addsBtn: Button
     private lateinit var recvLocale:RecyclerView
     private lateinit var localList:ArrayList<model.Collection>
@@ -40,6 +42,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var globalList: ArrayList<model.Collection>
     private lateinit var recvGlobale: RecyclerView
 
+    /*variabili globali normali*/
     private var i_local = 1
     private var i_global = 1
 
@@ -144,6 +147,7 @@ class MainActivity : AppCompatActivity() {
                         0
                     )
                 )
+                /*metodo FINTO*/
                 if(check.isChecked){
                     global.writeOnGlobal(Collection(
                         int,
@@ -156,7 +160,7 @@ class MainActivity : AppCompatActivity() {
             }else{
                 Toast.makeText(this,"Failed: content cannot be empty", Toast.LENGTH_SHORT).show()
             }
-
+            /*spostare dismiss*/
             dialog.dismiss()
         }
         addDialog.setNegativeButton("Cancel"){

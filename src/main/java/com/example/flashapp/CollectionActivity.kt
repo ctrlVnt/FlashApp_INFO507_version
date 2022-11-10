@@ -105,6 +105,7 @@ class CollectionActivity : AppCompatActivity() {
                 for (k in position + 1 until storageCart.size() ) {
                     storageCart.update(k, storageCart.find(k + 1)!!)
                 }
+                findViewById<TextView>(R.id.nCartes).setText("NOMBRE DE CARTES: " + (storageCart.size()-1).toString())
                 storageCart.delete(storageCart.size())
                 cartesList.removeAt(position)
                 cartesAdapter.notifyDataSetChanged()
@@ -147,7 +148,6 @@ class CollectionActivity : AppCompatActivity() {
             intent.type =  "image/*"
             intent.putExtra(Intent.EXTRA_LOCAL_ONLY, true)
             galleryActivityLauncher.launch(intent)
-
         }
 
         addDialog.setOnDismissListener {

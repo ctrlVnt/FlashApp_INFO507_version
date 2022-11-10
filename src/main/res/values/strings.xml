@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">FlashMe</string>
+    <string name="app_name">FlashApp</string>
 
     <string name="add_dialog_confirm">Valider</string>
     <string name="add_dialog_cancel">Annuler</string>
