@@ -60,14 +60,16 @@ class PlayActivity: AppCompatActivity() {
                     findViewById<TextView>(R.id.card_phrase).setText(storage.find(i)!!.reponse)
                 }else{
                     val selectedImage : Uri = Uri.parse(storage.find(i)!!.image)
-                    contentResolver.takePersistableUriPermission(selectedImage, Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                    //contentResolver.takePersistableUriPermission(selectedImage, Intent.FLAG_GRANT_READ_URI_PERMISSION)
                     findViewById<ImageView>(R.id.question_img).setImageURI(selectedImage)
                 }
                 confrimButton.setOnClickListener {
+                    findViewById<ImageView>(R.id.question_img).setImageURI(Uri.EMPTY)
                     punteggio += 1
                     next()
                 }
                 rejectButton.setOnClickListener {
+                    findViewById<ImageView>(R.id.question_img).setImageURI(Uri.EMPTY)
                     next()
                 }
             }

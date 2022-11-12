@@ -1,6 +1,7 @@
 package com.example.flashapp
 
 import adapter.CartesAdapter
+import android.app.Dialog
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
@@ -103,7 +104,18 @@ class CollectionActivity : AppCompatActivity() {
         }
 
         findViewById<Button>(R.id.play_button).setOnClickListener{
-            startPlayActivity(nameCollection)
+            if(storageCart.size() == 0){
+                val infltererror = LayoutInflater.from(this)
+                val itemerror = infltererror.inflate(R.layout.play_error, null)
+                val error = AlertDialog.Builder(this)
+                error.setView(itemerror)
+                error.setPositiveButton("Ok"){ dialog, _ ->
+                    dialog.dismiss()
+                }
+                error.show()
+            }else {
+                startPlayActivity(nameCollection)
+            }
         }
 
         cartesAdapter.setonItemClickListener(object : CartesAdapter.onItemClickListener{
