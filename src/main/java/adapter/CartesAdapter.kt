@@ -1,6 +1,7 @@
 package adapter
 
 import android.content.Context
+import android.content.Intent
 import android.graphics.BitmapFactory
 import android.net.Uri
 import android.view.LayoutInflater
@@ -28,15 +29,6 @@ class CartesAdapter(val c: Context, val collList:ArrayList<Cartes>, private var 
     }
 
     inner class CartesViewHolder(val v:View, listener : CartesAdapter.onItemClickListener,global:Int ):RecyclerView.ViewHolder(v) {
-        /*fun openFile(image: String) {
-            val intent = Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
-                addCategory(Intent.CATEGORY_OPENABLE)
-                type = "image/*"
-
-                putExtra(DocumentsContract.EXTRA_INITIAL_URI, true)
-            }
-            qimagine.setImageURI(Uri.parse(image))
-        }*/*/
 
         var question: TextView
         var reponse: TextView
@@ -73,20 +65,16 @@ class CartesAdapter(val c: Context, val collList:ArrayList<Cartes>, private var 
         val newList = collList[position]
         holder.question.text = newList.question
         holder.reponse.text = newList.reponse
-        //holder.openFile(newList.image)
-        val imgBitmap = BitmapFactory.decodeFile(newList.image)
-        println(newList.image)
-        holder.qimagine.setImageBitmap(imgBitmap)
+        if (newList.image != Uri.EMPTY.toString()) {
+            val selectedImage: Uri = Uri.parse(newList.image)
+            holder.qimagine.setImageURI(selectedImage)
+        }
+        else{
+            holder.qimagine.setImageURI(Uri.EMPTY)
+        }
     }
 
     override fun getItemCount(): Int {
         return  collList.size
-    }
-
-    private fun imageStorage(image: String):Uri{
-        var uri:Uri
-        CollectionActivity().openImage()
-        uri = Uri.parse(image)
-        return uri
     }
 }

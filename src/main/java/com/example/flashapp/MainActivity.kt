@@ -2,6 +2,7 @@ package com.example.flashapp
 
 import adapter.CollectionAdapter
 import android.content.Intent
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -76,7 +77,7 @@ class MainActivity : AppCompatActivity() {
             loadJson(storageGlobal, globalList, i_global)
             i_global = storageGlobal.size()
         }
-
+        println("la tringa vuot " + Uri.EMPTY.toString())
         /*Local storage*/
         storageLocal = CollectionJSONFileStorage(this, LOCAL)
         if(i_local <= storageLocal.size()) {
@@ -155,11 +156,10 @@ class MainActivity : AppCompatActivity() {
                     ))
                 }
                 collectionAdapter.notifyDataSetChanged()
+                dialog.dismiss()
             }else{
                 Toast.makeText(this,"Failed: content cannot be empty", Toast.LENGTH_SHORT).show()
             }
-            /*spostare dismiss*/
-            dialog.dismiss()
         }
         addDialog.setNegativeButton("Cancel"){
                 dialog,_->
@@ -171,7 +171,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun loadJson(storage: CollectionJSONFileStorage, arraylist:ArrayList<model.Collection>, fine:Int) {
-        println(storage.size())
         for (i in fine until storage.size() + 1) {
             try {
                 arraylist.add(

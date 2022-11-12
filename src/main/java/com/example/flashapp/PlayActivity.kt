@@ -1,10 +1,16 @@
 package com.example.flashapp
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
+import android.provider.DocumentsContract
 import android.view.View
 import android.widget.Button
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import model.Cartes
 import storage.CartesJSONFileStorage
@@ -50,7 +56,13 @@ class PlayActivity: AppCompatActivity() {
                 roundButton.visibility = View.INVISIBLE
                 rejectButton.visibility = View.VISIBLE
                 confrimButton.visibility = View.VISIBLE
-                findViewById<TextView>(R.id.card_phrase).setText(storage.find(i)!!.reponse)
+                if (storage.find(i)!!.image == Uri.EMPTY.toString()) {
+                    findViewById<TextView>(R.id.card_phrase).setText(storage.find(i)!!.reponse)
+                }else{
+                    val selectedImage : Uri = Uri.parse(storage.find(i)!!.image)
+                    contentResolver.takePersistableUriPermission(selectedImage, Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                    findViewById<ImageView>(R.id.question_img).setImageURI(selectedImage)
+                }
                 confrimButton.setOnClickListener {
                     punteggio += 1
                     next()
@@ -61,7 +73,7 @@ class PlayActivity: AppCompatActivity() {
             }
         }else{
             roundButton.setText("OK")
-            findViewById<TextView>(R.id.card_phrase).setText("HAI FATTO: $punteggio")
+            findViewById<TextView>(R.id.card_phrase).setText("Résultat: $punteggio")
             roundButton.setOnClickListener {
                 finish()
             }

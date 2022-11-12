@@ -9,6 +9,7 @@ import android.os.Bundle
 import android.provider.DocumentsContract
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.INVISIBLE
 import android.widget.*
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
@@ -86,12 +87,9 @@ class CollectionActivity : AppCompatActivity() {
             if (result.resultCode == RESULT_OK) {
                 val data = result.data
                 uri = data?.data!!
+                contentResolver.takePersistableUriPermission(uri, Intent.FLAG_GRANT_READ_URI_PERMISSION)
             }
         }
-
-        /*uploadphoto = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-            return@registerForActivityResult
-        }*/
 
         storageCart = CartesJSONFileStorage(this, nameCollection)
         if(i_local <= storageCart.size()) {
@@ -133,24 +131,29 @@ class CollectionActivity : AppCompatActivity() {
         val cardQuestion = item.findViewById<EditText>(R.id.edit_question)
         val cardAnswer = item.findViewById<EditText>(R.id.edit_answer)
 
+
         val addDialog = AlertDialog.Builder(this)
             .setView(item)
             .setPositiveButton("Ok") {
                 dialog, _ ->
-            val question = cardQuestion.text.toString()
-            val response = cardAnswer.text.toString()
-            cartesList.add(Cartes(count, nameCollection, question, response, uri.path.toString()))
-            storageCart.insert(
-                Cartes(
-                    count,
-                    nameCollection,
-                    question,
-                    response,
-                    uri.path.toString()
-                )
-            )
-            cartesAdapter.notifyDataSetChanged()
-            dialog.dismiss()
+                val question = cardQuestion.text.toString()
+                val response = cardAnswer.text.toString()
+                if(response != "" || (question != "" && cardQuestion.visibility != INVISIBLE)) {
+                    cartesList.add(Cartes(count, nameCollection, question, response, uri.toString()))
+                    storageCart.insert(
+                        Cartes(
+                            count,
+                            nameCollection,
+                            question,
+                            response,
+                            uri.toString()
+                        )
+                    )
+                    cartesAdapter.notifyDataSetChanged()
+                    dialog.dismiss()
+                }else{
+                    Toast.makeText(this,"Failed: content cannot be empty", Toast.LENGTH_SHORT).show()
+                }
             }
             .setNegativeButton("Cancel") { dialog, _ ->
             dialog.dismiss()
@@ -159,14 +162,18 @@ class CollectionActivity : AppCompatActivity() {
 
         addDialog.findViewById<FloatingActionButton>(R.id.button_image)!!.setOnClickListener {
             if (isReadPermissionGranted) {
-                val intent = Intent(Intent.ACTION_GET_CONTENT)
+                val intent = Intent(Intent.ACTION_OPEN_DOCUMENT)
                 intent.type = "image/*"
                 intent.putExtra(Intent.EXTRA_LOCAL_ONLY, true)
+                cardQuestion.setText("")
+                cardQuestion.visibility = INVISIBLE
                 galleryActivityLauncher.launch(intent)
+                item.findViewById<ImageView>(R.id.image_view_question).setImageDrawable(getResources().getDrawable(R.drawable.ic_baseline_done_all_24))
             }
         }
 
         addDialog.setOnDismissListener {
+            uri = Uri.EMPTY
             findViewById<TextView>(R.id.nCartes).setText("NOMBRE DE CARTES: " + storageCart.size().toString())
         }
     }
@@ -182,20 +189,27 @@ class CollectionActivity : AppCompatActivity() {
         cardQuestion.setText(questionItem)
         cardAnswer.setText(responseItem)
 
+        if(storageCart.find(position + 1)!!.image != Uri.EMPTY.toString()){
+            cardQuestion.visibility = INVISIBLE
+            item.findViewById<ImageView>(R.id.image_view_question).setImageURI(Uri.parse(storageCart.find(position+1)!!.image))
+        }
+
         val addDialog = AlertDialog.Builder(this)
             .setView(item)
             .setPositiveButton("Ok") {
                     dialog, _ ->
                 val question = cardQuestion.text.toString()
                 val response = cardAnswer.text.toString()
-                cartesList[position] = Cartes(position, nameCollection, question, response, uri.path.toString())
-                storageCart.update(position,
+                cartesList[position] =
+                    Cartes(position, nameCollection, question, response, uri.toString())
+                storageCart.update(
+                    position + 1,
                     Cartes(
                         position,
                         nameCollection,
                         question,
                         response,
-                        uri.path.toString()
+                        uri.toString()
                     )
                 )
                 cartesAdapter.notifyDataSetChanged()
@@ -212,11 +226,12 @@ class CollectionActivity : AppCompatActivity() {
                 intent.type = "image/*"
                 intent.putExtra(Intent.EXTRA_LOCAL_ONLY, true)
                 galleryActivityLauncher.launch(intent)
+
             }
         }
 
         addDialog.setOnDismissListener {
-
+            uri = Uri.EMPTY
         }
     }
 
@@ -257,15 +272,6 @@ class CollectionActivity : AppCompatActivity() {
         val intent = Intent(this, PlayActivity::class.java)
 
         intent.putExtra("list", list)
-        startActivity(intent)
-    }
-
-    fun openImage(){
-        val intent = Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
-            addCategory(Intent.CATEGORY_OPENABLE)
-            intent.type = "image/*"
-            putExtra(DocumentsContract.EXTRA_INITIAL_URI, true)
-        }
         startActivity(intent)
     }
 }
