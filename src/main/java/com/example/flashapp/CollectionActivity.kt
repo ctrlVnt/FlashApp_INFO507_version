@@ -4,19 +4,20 @@ import adapter.CartesAdapter
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
-import android.os.Binder
+import android.os.Build
 import android.os.Bundle
-import android.renderscript.ScriptGroup.Binding
+import android.provider.DocumentsContract
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.*
-import androidx.activity.result.ActivityResultCallback
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.view.get
+import androidx.core.view.size
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -25,14 +26,20 @@ import storage.CartesJSONFileStorage
 
 class CollectionActivity : AppCompatActivity() {
 
-    private lateinit var addsBtn: Button
+    private lateinit var addsBtn: FloatingActionButton
     private lateinit var recv: RecyclerView
     private lateinit var cartesList: ArrayList<Cartes>
     private lateinit var cartesAdapter: CartesAdapter
 
+    private var isReadPermissionGranted = false
+    private lateinit var permissionLauncher: ActivityResultLauncher<Array<String>>
+
     private lateinit var storageCart: CartesJSONFileStorage
 
     private lateinit var galleryActivityLauncher: ActivityResultLauncher<Intent>
+    //lateinit var uploadphoto: ActivityResultLauncher<Intent>
+
+    private lateinit var uri: Uri
 
     private var i_local = 1
 
@@ -42,6 +49,12 @@ class CollectionActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.layout_collection)
 
+        permissionLauncher = registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()){ permissions ->
+
+            isReadPermissionGranted = permissions[android.Manifest.permission.READ_EXTERNAL_STORAGE] ?: isReadPermissionGranted
+
+        }
+
         val type = intent.getStringExtra("collectiontype")
 
         var glob = 0
@@ -49,12 +62,10 @@ class CollectionActivity : AppCompatActivity() {
         if(type == "global")
             glob = 1
 
-        /*if (checkPermission(android.Manifest.permission.READ_EXTERNAL_STORAGE)) {
-            startActivity(intent)
-        }*/
+        addsBtn = findViewById(R.id.add_button)
 
         if (type == "global"){
-            findViewById<Button>(R.id.add_button).visibility = View.INVISIBLE
+            addsBtn.visibility = View.INVISIBLE
         }
 
         findViewById<TextView>(R.id.collection_name).setText(intent.getStringExtra("collectionName"))
@@ -64,22 +75,23 @@ class CollectionActivity : AppCompatActivity() {
 
         cartesList = ArrayList()
 
-        addsBtn = findViewById(R.id.add_button)
-
         recv = findViewById(R.id.cartes_list)
 
         cartesAdapter = CartesAdapter(this, cartesList, glob)
         recv.layoutManager = GridLayoutManager(this,3,RecyclerView.VERTICAL,false)
         recv.adapter = cartesAdapter
 
+        uri = Uri.EMPTY
         galleryActivityLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == RESULT_OK) {
                 val data = result.data
-                val uri: Uri? = data?.data
-                val imageView = findViewById<ImageView>(R.id.image_question)
-                imageView.setImageURI(uri)
+                uri = data?.data!!
             }
         }
+
+        /*uploadphoto = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            return@registerForActivityResult
+        }*/
 
         storageCart = CartesJSONFileStorage(this, nameCollection)
         if(i_local <= storageCart.size()) {
@@ -116,6 +128,7 @@ class CollectionActivity : AppCompatActivity() {
     private fun addCard(count:Int) {
         val inflter = LayoutInflater.from(this)
         val item = inflter.inflate(R.layout.layout_add_edit_card, null)
+        checkPermission()
 
         val cardQuestion = item.findViewById<EditText>(R.id.edit_question)
         val cardAnswer = item.findViewById<EditText>(R.id.edit_answer)
@@ -126,13 +139,14 @@ class CollectionActivity : AppCompatActivity() {
                 dialog, _ ->
             val question = cardQuestion.text.toString()
             val response = cardAnswer.text.toString()
-            cartesList.add(Cartes(count, nameCollection, question, response))
+            cartesList.add(Cartes(count, nameCollection, question, response, uri.path.toString()))
             storageCart.insert(
                 Cartes(
                     count,
                     nameCollection,
                     question,
-                    response
+                    response,
+                    uri.path.toString()
                 )
             )
             cartesAdapter.notifyDataSetChanged()
@@ -144,10 +158,12 @@ class CollectionActivity : AppCompatActivity() {
             .show()
 
         addDialog.findViewById<FloatingActionButton>(R.id.button_image)!!.setOnClickListener {
-            val intent = Intent(Intent.ACTION_GET_CONTENT)
-            intent.type =  "image/*"
-            intent.putExtra(Intent.EXTRA_LOCAL_ONLY, true)
-            galleryActivityLauncher.launch(intent)
+            if (isReadPermissionGranted) {
+                val intent = Intent(Intent.ACTION_GET_CONTENT)
+                intent.type = "image/*"
+                intent.putExtra(Intent.EXTRA_LOCAL_ONLY, true)
+                galleryActivityLauncher.launch(intent)
+            }
         }
 
         addDialog.setOnDismissListener {
@@ -158,6 +174,7 @@ class CollectionActivity : AppCompatActivity() {
     private fun editCard(questionItem: String, responseItem: String, position: Int) {
         val inflter = LayoutInflater.from(this)
         val item = inflter.inflate(R.layout.layout_add_edit_card, null)
+        checkPermission()
 
         val cardQuestion = item.findViewById<EditText>(R.id.edit_question)
         val cardAnswer = item.findViewById<EditText>(R.id.edit_answer)
@@ -171,13 +188,14 @@ class CollectionActivity : AppCompatActivity() {
                     dialog, _ ->
                 val question = cardQuestion.text.toString()
                 val response = cardAnswer.text.toString()
-                cartesList[position] = Cartes(position, nameCollection, question, response)
+                cartesList[position] = Cartes(position, nameCollection, question, response, uri.path.toString())
                 storageCart.update(position,
                     Cartes(
                         position,
                         nameCollection,
                         question,
-                        response
+                        response,
+                        uri.path.toString()
                     )
                 )
                 cartesAdapter.notifyDataSetChanged()
@@ -189,13 +207,12 @@ class CollectionActivity : AppCompatActivity() {
             .show()
 
         addDialog.findViewById<FloatingActionButton>(R.id.button_image)!!.setOnClickListener {
-            if (checkPermission(android.Manifest.permission.READ_EXTERNAL_STORAGE)) {
-                startActivity(intent)
+            if (isReadPermissionGranted) {
+                val intent = Intent(Intent.ACTION_GET_CONTENT)
+                intent.type = "image/*"
+                intent.putExtra(Intent.EXTRA_LOCAL_ONLY, true)
+                galleryActivityLauncher.launch(intent)
             }
-            val intent = Intent(Intent.ACTION_GET_CONTENT)
-            intent.type =  "image/*"
-            intent.putExtra(Intent.EXTRA_LOCAL_ONLY, true)
-            galleryActivityLauncher.launch(intent)
         }
 
         addDialog.setOnDismissListener {
@@ -210,44 +227,45 @@ class CollectionActivity : AppCompatActivity() {
                     storage.find(i)!!.id,
                     "collection: ${storage.find(i)!!.collection}",
                     storage.find(i)!!.question,
-                    storage.find(i)!!.reponse
+                    storage.find(i)!!.reponse,
+                    storage.find(i)!!.image
                 )
             )
         }
     }
 
-    private fun checkPermission(permission: String): Boolean {
-        var res = true
-        if (ContextCompat.checkSelfPermission(
-                applicationContext,
-                permission
-            ) != PackageManager.PERMISSION_GRANTED
-        ) {
-            if (!ActivityCompat.shouldShowRequestPermissionRationale(this, permission)) {
-                ActivityCompat.requestPermissions(this, arrayOf(permission), 0)
-            }
-            res = false
-        }
-        return res
-        /*val isReadPermission = ContextCompat.checkSelfPermission(
+    private fun checkPermission(){
+        val isReadPermission = ContextCompat.checkSelfPermission(
             this,
             android.Manifest.permission.READ_EXTERNAL_STORAGE
         ) == PackageManager.PERMISSION_GRANTED
+
+        val minSdkLevel = Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q
+
         isReadPermissionGranted = isReadPermission
+
         val permissionRequest = mutableListOf<String>()
-        if (!isReadPermissionGranted) {
-            registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissions ->
-                isReadPermissionGranted =
-                    permissions[android.Manifest.permission.READ_EXTERNAL_STORAGE]
-                        ?: isReadPermissionGranted
-            }
-        }*/
+        if (!isReadPermissionGranted){
+            permissionRequest.add(android.Manifest.permission.READ_EXTERNAL_STORAGE)
+        }
+        if (permissionRequest.isNotEmpty()){
+            permissionLauncher.launch(permissionRequest.toTypedArray())
+        }
     }
 
     private fun startPlayActivity (list: String) {
         val intent = Intent(this, PlayActivity::class.java)
 
         intent.putExtra("list", list)
+        startActivity(intent)
+    }
+
+    fun openImage(){
+        val intent = Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
+            addCategory(Intent.CATEGORY_OPENABLE)
+            intent.type = "image/*"
+            putExtra(DocumentsContract.EXTRA_INITIAL_URI, true)
+        }
         startActivity(intent)
     }
 }

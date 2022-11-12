@@ -13,10 +13,8 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.floatingactionbutton.FloatingActionButton
 import model.Collection
 import request.Global
-import storage.CartesJSONFileStorage
 import storage.CollectionJSONFileStorage
 import kotlin.collections.ArrayList
 

@@ -63,7 +63,8 @@ class Global (private val context : Context, tot:Int){
                                 cart.getInt(Cartes.ID),
                                 cart.getString(Cartes.COLLECTION),
                                 cart.getString(Cartes.QUESTION),
-                                cart.getString(Cartes.REPONSE)
+                                cart.getString(Cartes.REPONSE),
+                                cart.getString(Cartes.IMAGE)
                             )
                         )
                     }

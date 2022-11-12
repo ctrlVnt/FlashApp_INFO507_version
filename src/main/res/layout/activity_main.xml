@@ -12,6 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
+        android:weightSum="2"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -21,7 +22,8 @@
         <LinearLayout
             android:id="@+id/superior_layout"
             android:layout_width="match_parent"
-            android:layout_height="325dp"
+            android:layout_height="0dp"
+            android:layout_weight="1"
             android:background="@color/background1"
             android:orientation="vertical">
 
@@ -63,7 +65,8 @@
         <LinearLayout
             android:id="@+id/inferior_layout"
             android:layout_width="match_parent"
-            android:layout_height="325dp"
+            android:layout_height="0dp"
+            android:layout_weight="1"
             android:background="@color/background1"
             android:orientation="vertical">
 
@@ -99,22 +102,26 @@
         <!--PART PLAY-->
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="80dp"
+            android:layout_height="wrap_content"
             android:layout_gravity="bottom"
             android:background="@color/accent">
+
+            <Space
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
+            </Space>
 
             <LinearLayout
                 android:layout_width="200dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginLeft="100dp"
                 android:orientation="horizontal">
 
                 <Button
                     android:id="@+id/add_button"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
                     android:backgroundTint="@color/buttons"
                     android:elevation="20dp"
                     android:fontFamily="@font/josefinsansbold"
@@ -123,6 +130,13 @@
                     android:textSize="30dp" />
 
             </LinearLayout>
+
+            <Space
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
+            </Space>
+
         </LinearLayout>
     </LinearLayout>
 

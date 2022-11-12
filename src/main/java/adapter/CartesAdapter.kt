@@ -1,13 +1,17 @@
 package adapter
 
 import android.content.Context
+import android.graphics.BitmapFactory
+import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageButton
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.example.flashapp.CollectionActivity
 import com.example.flashapp.R
-import com.google.android.material.floatingactionbutton.FloatingActionButton
 import model.Cartes
 
 class CartesAdapter(val c: Context, val collList:ArrayList<Cartes>, private var glob:Int):RecyclerView.Adapter<CartesAdapter.CartesViewHolder>() {
@@ -24,14 +28,26 @@ class CartesAdapter(val c: Context, val collList:ArrayList<Cartes>, private var 
     }
 
     inner class CartesViewHolder(val v:View, listener : CartesAdapter.onItemClickListener,global:Int ):RecyclerView.ViewHolder(v) {
+        /*fun openFile(image: String) {
+            val intent = Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
+                addCategory(Intent.CATEGORY_OPENABLE)
+                type = "image/*"
+
+                putExtra(DocumentsContract.EXTRA_INITIAL_URI, true)
+            }
+            qimagine.setImageURI(Uri.parse(image))
+        }*/*/
+
         var question: TextView
         var reponse: TextView
+        val qimagine: ImageView
 
         init {
             question = v.findViewById(R.id.card_question)
             reponse = v.findViewById(R.id.card_response)
+            qimagine = v.findViewById(R.id.imagine_question)
             if (global == 1) {
-                v.findViewById<FloatingActionButton>(R.id.cart_delete).visibility = View.INVISIBLE
+                v.findViewById<ImageButton>(R.id.cart_delete).visibility = View.INVISIBLE
             }else {
                 v.setOnClickListener() {
                     mlistener.onItemClick(
@@ -40,7 +56,7 @@ class CartesAdapter(val c: Context, val collList:ArrayList<Cartes>, private var 
                         adapterPosition
                     )
                 }
-                v.findViewById<FloatingActionButton>(R.id.cart_delete).setOnClickListener {
+                v.findViewById<ImageButton>(R.id.cart_delete).setOnClickListener {
                     mlistener.deleteCardClick(adapterPosition)
                 }
             }
@@ -57,9 +73,20 @@ class CartesAdapter(val c: Context, val collList:ArrayList<Cartes>, private var 
         val newList = collList[position]
         holder.question.text = newList.question
         holder.reponse.text = newList.reponse
+        //holder.openFile(newList.image)
+        val imgBitmap = BitmapFactory.decodeFile(newList.image)
+        println(newList.image)
+        holder.qimagine.setImageBitmap(imgBitmap)
     }
 
     override fun getItemCount(): Int {
         return  collList.size
+    }
+
+    private fun imageStorage(image: String):Uri{
+        var uri:Uri
+        CollectionActivity().openImage()
+        uri = Uri.parse(image)
+        return uri
     }
 }
