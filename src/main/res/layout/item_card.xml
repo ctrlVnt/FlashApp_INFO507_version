@@ -50,7 +50,8 @@
                     android:layout_gravity="center"
                     android:layout_marginTop="10dp"
                     android:fontFamily="@font/helveticahowdisplay"
-                    android:textColor="@color/texts">
+                    android:textColor="@color/texts"
+                    android:gravity="center">
                 </TextView>
 
             </LinearLayout>
@@ -84,7 +85,8 @@
                     android:layout_marginTop="10dp"
                     android:fontFamily="@font/helveticahowdisplay"
                     android:layout_gravity="center"
-                    android:textColor="@color/texts">
+                    android:textColor="@color/texts"
+                    android:gravity="center">
                 </TextView>
 
                 <ImageButton

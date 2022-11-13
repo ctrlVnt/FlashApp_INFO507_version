@@ -10,6 +10,7 @@ import android.view.View
 import android.view.View.INVISIBLE
 import android.widget.Button
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
@@ -80,18 +81,13 @@ class PlayActivity: AppCompatActivity() {
                 }
             }
         }else{
-            /*
-            roundButton.setText("OK")
-            findViewById<TextView>(R.id.card_phrase).setText("Résultat: $punteggio")
-            roundButton.setOnClickListener {
-                finish()
-            }*/
-            findViewById<CardView>(R.id.collection_item).visibility = INVISIBLE
+            findViewById<LinearLayout>(R.id.linearLayout_play).visibility = INVISIBLE
             val inflate = LayoutInflater.from(this)
             val item = inflate.inflate(R.layout.win_item, null)
             item.findViewById<TextView>(R.id.win_text).setText("Résultat: $punteggio")
             val win = AlertDialog.Builder(this)
             win.setView(item)
+            win.setCancelable(false)
             win.setPositiveButton("Ok"){ dialog, _ ->
                 dialog.dismiss()
                 finish()
