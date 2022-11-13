@@ -80,8 +80,4 @@ class Global (private val context : Context, tot:Int){
             CollectionStorage.get(context, "global").delete(col.id)
         }
     }
-
-    fun writeOnGlobal(collection: Collection) {
-        /*method to implement*/
-    }
 }

@@ -1,10 +1,7 @@
 package com.example.flashapp
 
-import android.app.Dialog
-import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.provider.DocumentsContract
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.INVISIBLE
@@ -12,15 +9,10 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
-import android.widget.Toast
-import androidx.activity.result.ActivityResultLauncher
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.cardview.widget.CardView
 import model.Cartes
 import storage.CartesJSONFileStorage
-import storage.CollectionStorage
 
 class PlayActivity: AppCompatActivity() {
 

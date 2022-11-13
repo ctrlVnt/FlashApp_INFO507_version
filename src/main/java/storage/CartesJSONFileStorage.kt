@@ -1,7 +1,6 @@
 package storage
 
 import android.content.Context
-import android.net.Uri
 import model.Cartes
 import org.json.JSONObject
 import storage.utility.file.JSONFileStorage

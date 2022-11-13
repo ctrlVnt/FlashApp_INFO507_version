@@ -2,13 +2,10 @@ package com.example.flashapp
 
 import adapter.CollectionAdapter
 import android.content.Intent
-import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
-import android.widget.Button
-import android.widget.CheckBox
 import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.Toast
@@ -138,7 +135,6 @@ class MainActivity : AppCompatActivity() {
 
         val collectionName = v.findViewById<EditText>(R.id.collect_name)
         val collectionTag = v.findViewById<EditText>(R.id.tag_name)
-        val check = v.findViewById<CheckBox>(R.id.checkBox)
 
         val addDialog = AlertDialog.Builder(this)
 
@@ -158,14 +154,6 @@ class MainActivity : AppCompatActivity() {
                     )
                 )
 
-                if(check.isChecked){
-                    global.writeOnGlobal(Collection(
-                        int,
-                        names,
-                        tag,
-                        0
-                    ))
-                }
                 collectionAdapter.notifyDataSetChanged()
                 dialog.dismiss()
             }else{
@@ -197,20 +185,16 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun loadJson(storage: CollectionJSONFileStorage, arraylist:ArrayList<model.Collection>, fine:Int) {
-        println(storage.size())
+
         for (i in fine until storage.size() + 1) {
-            //try {
-                arraylist.add(
-                    model.Collection(
-                        storage.find(i)!!.id,
-                        storage.find(i)!!.name,
-                        storage.find(i)!!.tag,
-                        storage.find(i)!!.card_number
-                    )
+            arraylist.add(
+                model.Collection(
+                    storage.find(i)!!.id,
+                    storage.find(i)!!.name,
+                    storage.find(i)!!.tag,
+                    storage.find(i)!!.card_number
                 )
-            //}catch (e:java.lang.Exception){
-            //    Toast.makeText(this,"Error load collection", Toast.LENGTH_SHORT).show()
-            //}
+            )
         }
     }
 

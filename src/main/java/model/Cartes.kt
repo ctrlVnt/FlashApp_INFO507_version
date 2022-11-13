@@ -1,7 +1,5 @@
 package model
 
-import android.net.Uri
-
 class Cartes(
     val id: Int,
     val collection: String,

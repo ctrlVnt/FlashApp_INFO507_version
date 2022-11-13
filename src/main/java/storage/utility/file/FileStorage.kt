@@ -1,8 +1,6 @@
 package storage.utility.file
 
 import android.content.Context
-import android.widget.Toast
-import com.example.flashapp.R
 import storage.utility.Storage
 import java.io.BufferedReader
 import java.io.FileNotFoundException
@@ -36,7 +34,7 @@ abstract class FileStorage<T>(private val context: Context, name: String, extens
     private fun read(){
         try{
             val input = context.openFileInput(fileName)
-            //println(context.filesDir)
+
             if(input != null){
                 val builder = StringBuilder()
                 val bufferedReader = BufferedReader(InputStreamReader(input))
@@ -63,7 +61,6 @@ abstract class FileStorage<T>(private val context: Context, name: String, extens
     }
 
     override fun insert(obj: T): Int {
-        println(nextId)
         data.put(nextId, create(nextId, obj))
         nextId ++
         write()

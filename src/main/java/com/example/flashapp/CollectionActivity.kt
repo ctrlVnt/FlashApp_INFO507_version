@@ -1,13 +1,11 @@
 package com.example.flashapp
 
 import adapter.CartesAdapter
-import android.app.Dialog
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import android.provider.DocumentsContract
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.INVISIBLE
@@ -16,10 +14,7 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import androidx.core.view.get
-import androidx.core.view.size
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -39,7 +34,6 @@ class CollectionActivity : AppCompatActivity() {
     private lateinit var storageCart: CartesJSONFileStorage
 
     private lateinit var galleryActivityLauncher: ActivityResultLauncher<Intent>
-    //lateinit var uploadphoto: ActivityResultLauncher<Intent>
 
     private lateinit var uri: Uri
 
@@ -288,8 +282,6 @@ class CollectionActivity : AppCompatActivity() {
             this,
             android.Manifest.permission.READ_EXTERNAL_STORAGE
         ) == PackageManager.PERMISSION_GRANTED
-
-        val minSdkLevel = Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q
 
         isReadPermissionGranted = isReadPermission
 
