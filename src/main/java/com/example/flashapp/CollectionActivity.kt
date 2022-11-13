@@ -197,13 +197,15 @@ class CollectionActivity : AppCompatActivity() {
 
         val cardQuestion = item.findViewById<EditText>(R.id.edit_question)
         val cardAnswer = item.findViewById<EditText>(R.id.edit_answer)
+        val cardImage = item.findViewById<ImageView>(R.id.image_view_question)
 
         cardQuestion.setText(questionItem)
         cardAnswer.setText(responseItem)
+        cardImage.setImageURI(Uri.EMPTY)
 
         if(storageCart.find(position + 1)!!.image != Uri.EMPTY.toString()){
             cardQuestion.visibility = INVISIBLE
-            item.findViewById<ImageView>(R.id.image_view_question).setImageURI(Uri.parse(storageCart.find(position+1)!!.image))
+            cardImage.setImageURI(Uri.parse(storageCart.find(position+1)!!.image))
         }
 
         val addDialog = AlertDialog.Builder(this)
@@ -212,20 +214,38 @@ class CollectionActivity : AppCompatActivity() {
                     dialog, _ ->
                 val question = cardQuestion.text.toString()
                 val response = cardAnswer.text.toString()
-                cartesList[position] =
-                    Cartes(position, nameCollection, question, response, uri.toString())
-                storageCart.update(
-                    position + 1,
-                    Cartes(
-                        position,
-                        nameCollection,
-                        question,
-                        response,
-                        uri.toString()
+                val image = storageCart.find(position+1)!!.image
+                if(uri.toString() != Uri.EMPTY.toString()){
+                    cartesList[position] =
+                        Cartes(position, nameCollection, question, response, uri.toString())
+                    storageCart.update(
+                        position + 1,
+                        Cartes(
+                            position,
+                            nameCollection,
+                            question,
+                            response,
+                            uri.toString()
+                        )
                     )
-                )
-                cartesAdapter.notifyDataSetChanged()
-                dialog.dismiss()
+                    cartesAdapter.notifyDataSetChanged()
+                    dialog.dismiss()
+                }else {
+                    cartesList[position] =
+                        Cartes(position, nameCollection, question, response, image)
+                    storageCart.update(
+                        position + 1,
+                        Cartes(
+                            position,
+                            nameCollection,
+                            question,
+                            response,
+                            image
+                        )
+                    )
+                    cartesAdapter.notifyDataSetChanged()
+                    dialog.dismiss()
+                }
             }
             .setNegativeButton("Cancel") { dialog, _ ->
                 dialog.dismiss()
@@ -234,11 +254,10 @@ class CollectionActivity : AppCompatActivity() {
 
         addDialog.findViewById<FloatingActionButton>(R.id.button_image)!!.setOnClickListener {
             if (isReadPermissionGranted) {
-                val intent = Intent(Intent.ACTION_GET_CONTENT)
+                val intent = Intent(Intent.ACTION_OPEN_DOCUMENT)
                 intent.type = "image/*"
                 intent.putExtra(Intent.EXTRA_LOCAL_ONLY, true)
                 galleryActivityLauncher.launch(intent)
-
             }
         }
 

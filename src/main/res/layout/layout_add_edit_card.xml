@@ -37,14 +37,19 @@
                 android:layout_marginBottom="10dp"
                 android:fontFamily="@font/helveticahowdisplay"
                 android:hint="Entrez votre question"
+                android:textColorHint="#7d7c7c"
+                android:backgroundTint="#7d7c7c"
+                android:textColor="@color/texts"
                 android:textSize="23sp">
 
             </EditText>
 
             <View
-                android:layout_width="270dp"
-                android:layout_height="1dp"
+                android:id="@+id/diviseur"
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
                 android:layout_centerInParent="true"
+                android:backgroundTint="#690537"
                 android:background="?android:attr/listDivider" />
 
             <EditText
@@ -52,12 +57,16 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
+                android:layout_alignTop="@+id/diviseur"
                 android:layout_gravity="center"
                 android:layout_marginStart="10dp"
                 android:layout_marginEnd="10dp"
                 android:layout_marginBottom="200dp"
                 android:fontFamily="@font/helveticahowdisplay"
                 android:hint="Entrez votre reponse"
+                android:textColor="@color/texts"
+                android:textColorHint="#7d7c7c"
+                android:backgroundTint="#7d7c7c"
                 android:textSize="23sp">
 
             </EditText>
@@ -76,7 +85,9 @@
             <ImageView
                 android:id="@+id/image_view_question"
                 android:layout_width="match_parent"
-                android:layout_height="242dp"
+                android:layout_height="200dp"
+                android:layout_above="@+id/diviseur"
+                android:layout_marginBottom="20dp"
                 tools:srcCompat="@tools:sample/avatars" />
 
         </RelativeLayout>

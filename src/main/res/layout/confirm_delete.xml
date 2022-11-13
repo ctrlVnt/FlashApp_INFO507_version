@@ -29,45 +29,20 @@
             android:layout_width="300dp"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:minHeight="170dp"
+            android:minHeight="100dp"
             android:layout_gravity="center"
             android:orientation="horizontal">
 
-            <EditText
+            <TextView
                 android:id="@+id/collect_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="3"
-                android:fontFamily="@font/helveticanowdisplay"
-                android:hint="Nom du collection"
-                android:inputType="text"
-                android:textSize="17sp"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <EditText
-                android:id="@+id/tag_name"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="3"
-                android:fontFamily="@font/helveticanowdisplay"
-                android:hint="Tag"
-                android:inputType="text"
-                android:textSize="17sp"
-
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/collect_name" />
-
-            <CheckBox
-                android:id="@+id/checkBox"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:fontFamily="@font/helveticahowdisplay"
                 android:gravity="center"
-                android:text="Je veux télécharger mon deck en ligne"
+                android:hint="Etes-vous sûr que vous voulez supprimer?"
+                android:textSize="20sp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tag_name" />
+                app:layout_constraintTop_toTopOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

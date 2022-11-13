@@ -10,7 +10,6 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:orientation="vertical"
-        app:cardCornerRadius="30dp"
         app:cardElevation="50dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -20,11 +19,11 @@
         <TextView
             android:id="@+id/win_text"
             android:layout_width="wrap_content"
-            android:layout_height="50dp"
+            android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:fontFamily="@font/helveticahowdisplay"
             android:text="Risultato: "
-            android:textSize="20sp" />
+            android:textSize="30dp" />
 
     </androidx.cardview.widget.CardView>
 

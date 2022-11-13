@@ -14,10 +14,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:backgroundTint="@color/cartes"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
             android:orientation="horizontal"
             app:cardCornerRadius="30dp">
 
@@ -35,7 +35,8 @@
                     android:fontFamily="@font/josefinsansbold"
                     android:padding="3dp"
                     android:layout_marginLeft="15dp"
-                    android:text="Nom: ">
+                    android:text="Nom: "
+                    android:textColor="@color/texts">
                 </TextView>
 
                 <TextView
@@ -46,7 +47,8 @@
                     android:textSize="16sp"
                     android:layout_marginLeft="15dp"
                     android:fontFamily="@font/josefinsansitalic"
-                    android:text="TAG: ">
+                    android:text="TAG: "
+                    android:textColor="@color/texts">
                 </TextView>
 
             </LinearLayout>

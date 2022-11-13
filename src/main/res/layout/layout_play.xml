@@ -29,9 +29,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:padding="10sp"
-                android:text=""
+                android:text="Collection"
+                android:gravity="center"
                 android:fontFamily="@font/helveticahowdisplay"
-                android:textSize="25sp" />
+                android:textSize="30sp" />
 
         </LinearLayout>
 
@@ -75,6 +76,7 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:fontFamily="@font/helveticahowdisplay"
+                            android:textColor="@color/texts"
                             android:textSize="30sp">
                         </TextView>
 
@@ -117,7 +119,8 @@
                 android:textAllCaps="false"
                 android:backgroundTint="@color/buttons"
                 tools:layout_editor_absoluteX="323dp"
-                tools:layout_editor_absoluteY="685dp" />
+                tools:layout_editor_absoluteY="685dp"
+                android:textColor="@color/texts"/>
 
             <Space
                 android:layout_width="0dp"
@@ -132,7 +135,8 @@
                 android:fontFamily="@font/helveticahowdisplay"
                 android:textSize="18dp"
                 android:backgroundTint="@color/teal_200"
-                android:text="tourner" />
+                android:text="tourner"
+                android:textColor="@color/texts"/>
 
             <Space
                 android:layout_width="0dp"
@@ -147,7 +151,8 @@
                 android:textSize="18dp"
                 android:backgroundTint="@color/buttons"
                 android:text="vrai"
-                android:textAllCaps="false"/>
+                android:textAllCaps="false"
+                android:textColor="@color/texts"/>
 
             <Space
                 android:layout_width="0dp"

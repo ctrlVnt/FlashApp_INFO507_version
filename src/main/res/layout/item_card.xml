@@ -32,6 +32,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginTop="10dp"
+                    android:textColor="@color/texts"
                     android:text="Question"
                     android:fontFamily="@font/helveticahowdisplay">
                 </TextView>
@@ -48,7 +49,8 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginTop="10dp"
-                    android:fontFamily="@font/helveticahowdisplay">
+                    android:fontFamily="@font/helveticahowdisplay"
+                    android:textColor="@color/texts">
                 </TextView>
 
             </LinearLayout>
@@ -70,6 +72,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginTop="10dp"
+                    android:textColor="@color/texts"
                     android:text="Reponse"
                     android:fontFamily="@font/helveticahowdisplay">
                 </TextView>
@@ -80,7 +83,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
                     android:fontFamily="@font/helveticahowdisplay"
-                    android:layout_gravity="center">
+                    android:layout_gravity="center"
+                    android:textColor="@color/texts">
                 </TextView>
 
                 <ImageButton

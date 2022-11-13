@@ -27,7 +27,7 @@ class MainActivity : AppCompatActivity() {
         private const val GLOBAL = "global"
     }
 
-    private lateinit var addsBtn: Button
+    private lateinit var addsBtn: ImageButton
     private lateinit var recvLocale:RecyclerView
     private lateinit var localList:ArrayList<model.Collection>
     private lateinit var collectionAdapter:CollectionAdapter
@@ -96,15 +96,28 @@ class MainActivity : AppCompatActivity() {
             }
 
             override fun onAddClick(position: Int) {
-                if(storageLocal.size() > 1) {
-                    for (k in position + 1 until storageLocal.size()) {
-                        storageLocal.update(k, storageLocal.find(k + 1)!!)
+
+                val sup = LayoutInflater.from(this@MainActivity)
+                val it = sup.inflate(R.layout.confirm_delete,null)
+                val supDialog = AlertDialog.Builder(this@MainActivity)
+                supDialog.setView(it)
+                supDialog.setPositiveButton("Oui"){ dialog, _ ->
+                    if(storageLocal.size() > 1) {
+                        for (k in position + 1 until storageLocal.size()) {
+                            storageLocal.update(k, storageLocal.find(k + 1)!!)
+                        }
                     }
+                    storageLocal.delete(storageLocal.size())
+                    localList.removeAt(position)
+                    i_local -= 1
+                    collectionAdapter.notifyDataSetChanged()
+                    dialog.dismiss()
                 }
-                storageLocal.delete(storageLocal.size())
-                localList.removeAt(position)
-                i_local -= 1
-                collectionAdapter.notifyDataSetChanged()
+                supDialog.setNegativeButton("Non"){dialog,_->
+                    dialog.dismiss()
+                }
+                supDialog.create()
+                supDialog.show()
             }
         })
 
