@@ -94,7 +94,7 @@
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/helveticahowdisplay"
                         android:padding="10dp"
-                        android:text="Globales"
+                        android:text="Global"
                         android:textColor="@color/white"
                         android:textStyle="bold"
                         android:textSize="30sp" />
