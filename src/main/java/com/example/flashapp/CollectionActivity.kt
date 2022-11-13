@@ -150,7 +150,7 @@ class CollectionActivity : AppCompatActivity() {
                 dialog, _ ->
                 val question = cardQuestion.text.toString()
                 val response = cardAnswer.text.toString()
-                if(question != "" && uri.toString() == Uri.EMPTY.toString() || question == "" && uri.toString() != Uri.EMPTY.toString()) {
+                if((question != "" && uri.toString() == Uri.EMPTY.toString() || question == "" && uri.toString() != Uri.EMPTY.toString()) && response != "") {
                     cartesList.add(Cartes(count, nameCollection, question, response, uri.toString()))
                     storageCart.insert(
                         Cartes(
@@ -164,7 +164,10 @@ class CollectionActivity : AppCompatActivity() {
                     cartesAdapter.notifyDataSetChanged()
                     dialog.dismiss()
                 }else{
-                    Toast.makeText(this,"Échec: erreur lors du chargement de l'image, veuillez réessayer", Toast.LENGTH_SHORT).show()
+                    if(uri.toString() == Uri.EMPTY.toString() && cardQuestion.visibility == INVISIBLE)
+                        Toast.makeText(this,"Échec: erreur lors du chargement de l'image, veuillez réessayer", Toast.LENGTH_SHORT).show()
+                    else
+                        Toast.makeText(this,"Échec: vous ne pouvez pas insérer de cartes vierges, remplissez tous les espaces", Toast.LENGTH_SHORT).show()
                 }
             }
             .setNegativeButton("Cancel") { dialog, _ ->
