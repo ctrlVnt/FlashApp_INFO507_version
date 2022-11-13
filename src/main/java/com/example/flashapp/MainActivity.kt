@@ -10,6 +10,7 @@ import android.view.View
 import android.widget.Button
 import android.widget.CheckBox
 import android.widget.EditText
+import android.widget.ImageButton
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -77,7 +78,7 @@ class MainActivity : AppCompatActivity() {
             loadJson(storageGlobal, globalList, i_global)
             i_global = storageGlobal.size()
         }
-        println("la tringa vuot " + Uri.EMPTY.toString())
+
         /*Local storage*/
         storageLocal = CollectionJSONFileStorage(this, LOCAL)
         if(i_local <= storageLocal.size()) {
@@ -119,6 +120,10 @@ class MainActivity : AppCompatActivity() {
                 TODO("Not yet implemented")
             }
         })
+
+        findViewById<ImageButton>(R.id.refresh).setOnClickListener{
+
+        }
     }
 
     private fun addInfo(int: Int) {

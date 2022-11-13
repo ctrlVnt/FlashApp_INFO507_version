@@ -24,23 +24,20 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:background="@color/background1"
             android:orientation="vertical">
 
             <!-- PER TESTO -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/title"
                 android:orientation="horizontal">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/josefinsansbold"
+                    android:fontFamily="@font/helveticahowdisplay"
                     android:padding="20dp"
                     android:text="MON COLLECTIONS"
-                    android:textColor="@color/white"
                     android:textSize="25sp" />
 
             </LinearLayout>
@@ -67,25 +64,30 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:background="@color/background1"
             android:orientation="vertical">
 
             <!-- PER TESTO -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/title"
                 android:orientation="horizontal">
 
                 <TextView
                     android:id="@+id/global"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/josefinsansbold"
+                    android:fontFamily="@font/helveticahowdisplay"
                     android:padding="20dp"
                     android:text="GLOBAL"
-                    android:textColor="@color/white"
                     android:textSize="25sp" />
+
+                <ImageButton
+                    android:id="@+id/refresh"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@color/title"
+                    android:layout_gravity="center"
+                    tools:srcCompat="@drawable/ic_baseline_refresh_24"/>
 
             </LinearLayout>
 
@@ -95,6 +97,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:scrollbars="vertical"
+                android:clickable="true"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
         </LinearLayout>
@@ -104,7 +107,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
-            android:background="@color/accent">
+            >
 
             <Space
                 android:layout_width="wrap_content"
@@ -118,16 +121,15 @@
                 android:layout_gravity="center"
                 android:orientation="horizontal">
 
-                <Button
+                <ImageButton
                     android:id="@+id/add_button"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:backgroundTint="@color/buttons"
                     android:elevation="20dp"
                     android:fontFamily="@font/josefinsansbold"
-                    android:text="Add"
-                    android:textColor="@color/white"
-                    android:textSize="30dp" />
+                    android:src = "@drawable/ic_add"
+                    android:textColor="@color/white" />
 
             </LinearLayout>
 
