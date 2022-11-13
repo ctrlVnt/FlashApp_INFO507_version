@@ -33,8 +33,7 @@
                     android:layout_gravity="center"
                     android:layout_marginTop="10dp"
                     android:text="Question"
-                    android:textColor="@color/texts"
-                    android:fontFamily="@font/josefinsans">
+                    android:fontFamily="@font/helveticahowdisplay">
                 </TextView>
 
                 <ImageView
@@ -49,17 +48,16 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginTop="10dp"
-                    android:textColor="@color/texts"
-                    android:fontFamily="@font/josefinsans">
+                    android:fontFamily="@font/helveticahowdisplay">
                 </TextView>
 
             </LinearLayout>
 
                 <View
-                    android:layout_width="130dp"
-                    android:layout_height="2dp"
+                    android:layout_width="120dp"
+                    android:layout_height="1dp"
                     android:layout_gravity="center"
-                    android:background="@color/accent" />
+                    android:background="#690537" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -73,8 +71,7 @@
                     android:layout_gravity="center"
                     android:layout_marginTop="10dp"
                     android:text="Reponse"
-                    android:textColor="@color/texts"
-                    android:fontFamily="@font/josefinsans">
+                    android:fontFamily="@font/helveticahowdisplay">
                 </TextView>
 
                 <TextView
@@ -82,8 +79,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
-                    android:textColor="@color/texts"
-                    android:fontFamily="@font/josefinsans"
+                    android:fontFamily="@font/helveticahowdisplay"
                     android:layout_gravity="center">
                 </TextView>
 

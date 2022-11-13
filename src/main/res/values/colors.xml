@@ -9,12 +9,12 @@
     <color name="white">#FFFFFFFF</color>
     <color name="title">#06C79A</color>
     <color name="accent">#049170</color>
-    <color name="cartes">#e2fef8</color>
+    <color name="cartes">#fad0f7</color>
     <color name="subtitles">#B3E5FC</color>
     <color name="background1">#fafafa</color>
     <color name="background2">#D9FFFC</color>
-    <color name="buttons">#910425</color>
+    <color name="buttons">#6FE87A</color>
     <color name="teal_700">#FF018786</color>
     <color name="red">#D1001F</color>
-    <color name="texts">#FF677471</color>
+    <color name="texts">#5e5e5e</color>
 </resources>

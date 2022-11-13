@@ -25,12 +25,10 @@ class CollectionAdapter(val c: Context, val collList:ArrayList<model.Collection>
     inner class CollectionViewHolder(val v:View, listener : onItemClickListener, nameItem:String):RecyclerView.ViewHolder(v){
         var nameCollection:TextView
         var tagCollection:TextView
-        var numberCard:TextView
 
         init {
             nameCollection = v.findViewById(R.id.collection_name)
             tagCollection = v.findViewById(R.id.collection_tag)
-            numberCard = v.findViewById(R.id.collection_number)
             v.setOnClickListener{
                 mlistener.onItemClick(nameCollection.text as String, tagCollection.text as String)
             }
@@ -54,7 +52,6 @@ class CollectionAdapter(val c: Context, val collList:ArrayList<model.Collection>
         val newList = collList[position]
         holder.nameCollection.text = newList.name
         holder.tagCollection.text = "#"+newList.tag
-        holder.numberCard.text = "NOMBRE DES CARTES: " + newList.card_number.toString()
     }
 
     override fun getItemCount(): Int {

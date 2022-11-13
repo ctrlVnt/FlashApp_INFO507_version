@@ -21,13 +21,12 @@ import storage.CollectionJSONFileStorage
 import kotlin.collections.ArrayList
 
 class MainActivity : AppCompatActivity() {
-    /*come la define di C, definisci tipi globali non modificabili*/
+
     companion object {
         private const val LOCAL = "collection"
         private const val GLOBAL = "global"
     }
 
-    /*inizializzi variabili che non sono di tipo comune, quindi Int, String etc... (init è sempre un inizializzazione)*/
     private lateinit var addsBtn: Button
     private lateinit var recvLocale:RecyclerView
     private lateinit var localList:ArrayList<model.Collection>
@@ -42,7 +41,6 @@ class MainActivity : AppCompatActivity() {
     private lateinit var globalList: ArrayList<model.Collection>
     private lateinit var recvGlobale: RecyclerView
 
-    /*variabili globali normali*/
     private var i_local = 1
     private var i_global = 1
 
@@ -73,22 +71,24 @@ class MainActivity : AppCompatActivity() {
 
         global = Global(this, storageGlobal.size())
 
-        /*Global Storage*/
+
         if(i_global < storageGlobal.size()) {
             loadJson(storageGlobal, globalList, i_global)
             i_global = storageGlobal.size()
         }
 
-        /*Local storage*/
+
         storageLocal = CollectionJSONFileStorage(this, LOCAL)
         if(i_local <= storageLocal.size()) {
             loadJson(storageLocal, localList, i_local)
             i_local = storageLocal.size()
         }
 
+
         addsBtn.setOnClickListener {
-            addInfo(storageLocal.size())
+            addInfo(i_local)
         }
+
 
         collectionAdapter.setonItemClickListener(object : CollectionAdapter.onItemClickListener{
             override fun onItemClick(nameItem: String, tagItem: String) {
@@ -96,10 +96,6 @@ class MainActivity : AppCompatActivity() {
             }
 
             override fun onAddClick(position: Int) {
-                /*val storageCart = CartesJSONFileStorage(this@MainActivity, storageLocal.find(position + 1)!!.name)
-                for (f in 1 until storageCart.size()){
-                    storageCart.delete(f)
-                }*/
                 if(storageLocal.size() > 1) {
                     for (k in position + 1 until storageLocal.size()) {
                         storageLocal.update(k, storageLocal.find(k + 1)!!)
@@ -107,6 +103,7 @@ class MainActivity : AppCompatActivity() {
                 }
                 storageLocal.delete(storageLocal.size())
                 localList.removeAt(position)
+                i_local -= 1
                 collectionAdapter.notifyDataSetChanged()
             }
         })
@@ -117,13 +114,9 @@ class MainActivity : AppCompatActivity() {
             }
 
             override fun onAddClick(position: Int) {
-                TODO("Not yet implemented")
+
             }
         })
-
-        findViewById<ImageButton>(R.id.refresh).setOnClickListener{
-
-        }
     }
 
     private fun addInfo(int: Int) {
@@ -141,7 +134,7 @@ class MainActivity : AppCompatActivity() {
                 dialog,_->
             val names = collectionName.text.toString()
             val tag = collectionTag.text.toString()
-            if(names != "" && tag != "") {
+            if(names != "" && tag != "" && dontExist(names)) {
                 localList.add(model.Collection(int, names, tag, 0))
                 storageLocal.insert(
                     Collection(
@@ -151,7 +144,7 @@ class MainActivity : AppCompatActivity() {
                         0
                     )
                 )
-                /*metodo FINTO*/
+
                 if(check.isChecked){
                     global.writeOnGlobal(Collection(
                         int,
@@ -163,7 +156,10 @@ class MainActivity : AppCompatActivity() {
                 collectionAdapter.notifyDataSetChanged()
                 dialog.dismiss()
             }else{
-                Toast.makeText(this,"Failed: content cannot be empty", Toast.LENGTH_SHORT).show()
+                if(!dontExist(names))
+                    Toast.makeText(this,"Échec: cette collection existe déjà", Toast.LENGTH_SHORT).show()
+                else
+                    Toast.makeText(this,"Échec: le contenu ne peut pas être vide", Toast.LENGTH_SHORT).show()
             }
         }
         addDialog.setNegativeButton("Cancel"){
@@ -175,9 +171,22 @@ class MainActivity : AppCompatActivity() {
         addDialog.show()
     }
 
+    private fun dontExist(name: String) : Boolean{
+        var count = localList.size
+
+        for (i in 0 until count) {
+            if (localList[i].name == name) {
+                return false
+            }
+        }
+
+        return true
+    }
+
     private fun loadJson(storage: CollectionJSONFileStorage, arraylist:ArrayList<model.Collection>, fine:Int) {
+        println(storage.size())
         for (i in fine until storage.size() + 1) {
-            try {
+            //try {
                 arraylist.add(
                     model.Collection(
                         storage.find(i)!!.id,
@@ -186,9 +195,9 @@ class MainActivity : AppCompatActivity() {
                         storage.find(i)!!.card_number
                     )
                 )
-            }catch (e:java.lang.Exception){
-                break
-            }
+            //}catch (e:java.lang.Exception){
+            //    Toast.makeText(this,"Error load collection", Toast.LENGTH_SHORT).show()
+            //}
         }
     }
 

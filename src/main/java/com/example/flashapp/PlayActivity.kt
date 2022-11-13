@@ -1,17 +1,22 @@
 package com.example.flashapp
 
+import android.app.Dialog
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.provider.DocumentsContract
+import android.view.LayoutInflater
 import android.view.View
+import android.view.View.INVISIBLE
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.cardview.widget.CardView
 import model.Cartes
 import storage.CartesJSONFileStorage
 import storage.CollectionStorage
@@ -51,18 +56,19 @@ class PlayActivity: AppCompatActivity() {
         if(i < storage.size() + 1) {
             rejectButton.visibility = View.INVISIBLE
             confrimButton.visibility = View.INVISIBLE
-            findViewById<TextView>(R.id.card_phrase).setText(storage.find(i)!!.question)
+            if (storage.find(i)!!.image == Uri.EMPTY.toString()) {
+                findViewById<TextView>(R.id.card_phrase).setText(storage.find(i)!!.question)
+            }
+            else{
+                val selectedImage : Uri = Uri.parse(storage.find(i)!!.image)
+                findViewById<ImageView>(R.id.question_img).setImageURI(selectedImage)
+            }
             roundButton.setOnClickListener {
+                findViewById<ImageView>(R.id.question_img).setImageURI(Uri.EMPTY)
                 roundButton.visibility = View.INVISIBLE
                 rejectButton.visibility = View.VISIBLE
                 confrimButton.visibility = View.VISIBLE
-                if (storage.find(i)!!.image == Uri.EMPTY.toString()) {
-                    findViewById<TextView>(R.id.card_phrase).setText(storage.find(i)!!.reponse)
-                }else{
-                    val selectedImage : Uri = Uri.parse(storage.find(i)!!.image)
-                    //contentResolver.takePersistableUriPermission(selectedImage, Intent.FLAG_GRANT_READ_URI_PERMISSION)
-                    findViewById<ImageView>(R.id.question_img).setImageURI(selectedImage)
-                }
+                findViewById<TextView>(R.id.card_phrase).setText(storage.find(i)!!.reponse)
                 confrimButton.setOnClickListener {
                     findViewById<ImageView>(R.id.question_img).setImageURI(Uri.EMPTY)
                     punteggio += 1
@@ -74,11 +80,23 @@ class PlayActivity: AppCompatActivity() {
                 }
             }
         }else{
+            /*
             roundButton.setText("OK")
             findViewById<TextView>(R.id.card_phrase).setText("Résultat: $punteggio")
             roundButton.setOnClickListener {
                 finish()
+            }*/
+            findViewById<CardView>(R.id.collection_item).visibility = INVISIBLE
+            val inflate = LayoutInflater.from(this)
+            val item = inflate.inflate(R.layout.win_item, null)
+            item.findViewById<TextView>(R.id.win_text).setText("Résultat: $punteggio")
+            val win = AlertDialog.Builder(this)
+            win.setView(item)
+            win.setPositiveButton("Ok"){ dialog, _ ->
+                dialog.dismiss()
+                finish()
             }
+            win.show()
         }
     }
 

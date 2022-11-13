@@ -21,7 +21,6 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/title"
             android:orientation="vertical"
             android:padding="10dp">
 
@@ -32,24 +31,20 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="10dp"
-                android:background="@color/title"
-                android:fontFamily="@font/josefinsansbold"
-                android:textColor="@color/white"
-                android:textSize="25sp"
-                tools:text="COLLECTION" />
+                android:fontFamily="@font/helveticahowdisplay"
+                android:textSize="30sp"
+                tools:text="Collection"
+                android:textStyle="bold" />
 
 
             <TextView
                 android:id="@+id/tag"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/cartes"
-                android:fontFamily="@font/josefinsansitalic"
+                android:fontFamily="@font/helveticahowdisplay"
                 android:padding="5dp"
-                android:text="TAG: "
-                android:textColor="@color/texts"
-                android:textSize="20sp"
-                android:textStyle="bold" />
+                android:text="Tag: "
+                android:textSize="20sp" />
 
             <View
                 android:layout_width="match_parent"
@@ -61,18 +56,15 @@
                 android:id="@+id/nCartes"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/cartes"
-                android:fontFamily="@font/josefinsansitalic"
+                android:fontFamily="@font/helveticahowdisplay"
                 android:padding="5dp"
-                android:text="NOMBRE DE CARTES: "
-                android:textColor="#677471"
-                android:textSize="20sp"
-                android:textStyle="bold" />
+                android:text="Nombre de cartes: "
+                android:textSize="20sp" />
 
             <!-- DIVISEUR -->
             <View
                 android:layout_width="match_parent"
-                android:layout_height="3dp"
+                android:layout_height="1dp"
                 android:background="?android:attr/listDivider"
                 android:backgroundTint="@color/accent" />
 
@@ -100,8 +92,8 @@
             android:id="@+id/layout_play"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
             android:layout_gravity="center"
-            android:background="@color/accent"
             android:weightSum="3"
             android:orientation="horizontal">
 
@@ -119,17 +111,17 @@
 
                 <Button
                     android:id="@+id/play_button"
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_margin="5dp"
                     android:layout_weight="1"
                     android:backgroundTint="@color/buttons"
-                    android:elevation="50dp"
-                    android:fontFamily="@font/josefinsansbold"
-                    android:text="PLAY"
+                    android:fontFamily="@font/helveticahowdisplay"
+                    android:text="Play"
+                    android:textAllCaps="false"
                     android:textAlignment="center"
                     android:textColor="@color/white"
-                    android:textSize="30dp" />
+                    android:textSize="20sp" />
             </LinearLayout>
 
             <Space
@@ -143,6 +135,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:layout_marginEnd="20dp"
                 android:clickable="true"
                 app:srcCompat="@android:drawable/ic_input_add" />
 

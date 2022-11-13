@@ -150,7 +150,7 @@ class CollectionActivity : AppCompatActivity() {
                 dialog, _ ->
                 val question = cardQuestion.text.toString()
                 val response = cardAnswer.text.toString()
-                if(response != "" || (question != "" && cardQuestion.visibility != INVISIBLE)) {
+                if(question != "" && uri.toString() == Uri.EMPTY.toString() || question == "" && uri.toString() != Uri.EMPTY.toString()) {
                     cartesList.add(Cartes(count, nameCollection, question, response, uri.toString()))
                     storageCart.insert(
                         Cartes(
@@ -164,7 +164,7 @@ class CollectionActivity : AppCompatActivity() {
                     cartesAdapter.notifyDataSetChanged()
                     dialog.dismiss()
                 }else{
-                    Toast.makeText(this,"Failed: content cannot be empty", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this,"Échec: erreur lors du chargement de l'image, veuillez réessayer", Toast.LENGTH_SHORT).show()
                 }
             }
             .setNegativeButton("Cancel") { dialog, _ ->
@@ -180,7 +180,7 @@ class CollectionActivity : AppCompatActivity() {
                 cardQuestion.setText("")
                 cardQuestion.visibility = INVISIBLE
                 galleryActivityLauncher.launch(intent)
-                item.findViewById<ImageView>(R.id.image_view_question).setImageDrawable(getResources().getDrawable(R.drawable.ic_baseline_done_all_24))
+                item.findViewById<ImageView>(R.id.image_view_question).setImageDrawable(getResources().getDrawable(R.drawable.ic_upload))
             }
         }
 

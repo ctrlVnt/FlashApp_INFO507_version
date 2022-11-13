@@ -9,7 +9,7 @@
 
     <androidx.cardview.widget.CardView
         android:id="@+id/edit_card"
-        android:backgroundTint="@color/background2"
+        android:backgroundTint="@color/cartes"
         android:layout_width="300dp"
         android:layout_height="500dp"
         android:layout_gravity="center"
@@ -35,7 +35,7 @@
                 android:layout_marginTop="200dp"
                 android:layout_marginEnd="10dp"
                 android:layout_marginBottom="10dp"
-                android:fontFamily="@font/josefinsans"
+                android:fontFamily="@font/helveticahowdisplay"
                 android:hint="Entrez votre question"
                 android:textSize="23sp">
 
@@ -56,7 +56,7 @@
                 android:layout_marginStart="10dp"
                 android:layout_marginEnd="10dp"
                 android:layout_marginBottom="200dp"
-                android:fontFamily="@font/josefinsans"
+                android:fontFamily="@font/helveticahowdisplay"
                 android:hint="Entrez votre reponse"
                 android:textSize="23sp">
 
@@ -71,7 +71,6 @@
                 android:layout_marginTop="30dp"
                 android:layout_marginEnd="30dp"
                 android:clickable="true"
-                app:backgroundTint="#8C8C8C"
                 app:srcCompat="@android:drawable/ic_menu_camera" />
 
             <ImageView

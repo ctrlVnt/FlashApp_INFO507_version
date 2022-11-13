@@ -37,7 +37,7 @@
                 android:id="@+id/collect_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/josefinsansbold"
+                android:fontFamily="@font/helveticahowdisplay"
                 android:gravity="center"
                 android:hint="Avant de pouvoir jouer, ajoutez quelques cartes"
                 android:textSize="20sp"

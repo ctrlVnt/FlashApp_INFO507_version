@@ -63,6 +63,7 @@ abstract class FileStorage<T>(private val context: Context, name: String, extens
     }
 
     override fun insert(obj: T): Int {
+        println(nextId)
         data.put(nextId, create(nextId, obj))
         nextId ++
         write()
@@ -71,6 +72,7 @@ abstract class FileStorage<T>(private val context: Context, name: String, extens
 
     override fun delete(id: Int) {
         data.remove(id)
+        nextId -= 1
         write()
     }
 
